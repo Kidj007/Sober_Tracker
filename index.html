@@ -34,13 +34,13 @@
         .sidebar {
             position: fixed;
             top: 0;
-            left: -250px; /* Hidden by default */
+            left: -250px; /* Completely off-screen */
             width: 250px;
             height: 100%;
             background-color: #fff;
             box-shadow: 2px 0 5px rgba(0,0,0,0.5);
             padding: 20px;
-            transition: left 0.3s; /* Smooth transition */
+            transition: left 0.3s ease; /* Smooth transition */
             z-index: 999;
         }
         .sidebar a {
@@ -53,9 +53,9 @@
         .sidebar a:hover {
             background-color: #f4f4f4;
         }
-        /* Show sidebar */
+        /* Show sidebar when active */
         .sidebar.active {
-            left: 0; /* Move into view */
+            left: 0; /* Bring into view */
         }
         /* Other existing styles */
         #daysSober {
