@@ -77,6 +77,7 @@
 
     <h1>Sober Day Tracker</h1>
     <div class="quote" id="quote">“Every accomplishment starts with the decision to try.” — John F. Kennedy</div>
+    <div class="days-sober" id="daysSober">Days Sober: <span id="daysCount">0</span></div>
     <button id="updateDateButton" onclick="updateDate()">Update Date</button>
 
     <script>
@@ -90,7 +91,24 @@
             const date = prompt("Please enter the sobriety start date (YYYY-MM-DD):");
             if (date) {
                 localStorage.setItem("soberDate", date);
+                calculateDaysSober(date);
                 alert("Date updated! You can now track your sobriety.");
+            }
+        }
+
+        function calculateDaysSober(soberDate) {
+            const dateEntered = new Date(soberDate);
+            const today = new Date();
+            const diffTime = today - dateEntered;
+            const daysSober = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('daysCount').textContent = daysSober;
+        }
+
+        // On load, calculate the sober days if the date is stored
+        window.onload = function() {
+            const storedDate = localStorage.getItem("soberDate");
+            if (storedDate) {
+                calculateDaysSober(storedDate);
             }
         }
     </script>
