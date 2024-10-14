@@ -7,47 +7,47 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0; /* Remove default margin */
-            padding: 20px; /* Add padding around the content */
+            margin: 0; 
+            padding: 20px; 
             text-align: center;
-            position: relative; /* For positioning the button */
-            min-height: 100vh; /* Ensure the body is at least full height */
-            display: flex; /* Flexbox for vertical centering */
-            flex-direction: column; /* Stack items vertically */
-            justify-content: flex-start; /* Align items at the top */
-            background-color: #f7f7f7; /* Light background color */
+            position: relative; 
+            min-height: 100vh; 
+            display: flex; 
+            flex-direction: column; 
+            justify-content: flex-start; 
+            background-color: #f7f7f7; 
         }
         h1 {
             color: #4CAF50;
-            font-size: 2.5em; /* Larger heading for visibility */
-            margin: 10px 0; /* Reduced margin for top and bottom */
+            font-size: 2.5em; 
+            margin: 10px 0; 
         }
         #trackerImage {
-            width: 200px; /* Set image width */
-            height: 200px; /* Set image height */
-            margin: 10px auto; /* Center the image */
+            width: 200px; 
+            height: 200px; 
+            margin: 10px auto; 
         }
         #daysSober {
-            font-size: 2em; /* Larger font for the sober days text */
+            font-size: 2em; 
             color: #4CAF50;
-            margin: 10px 0; /* Reduced margin for spacing */
+            margin: 10px 0; 
         }
         #quoteSection {
-            margin: 10px 0; /* Reduced margin for spacing */
-            font-size: 1.5em; /* Font size for quotes */
-            color: #333; /* Darker color for contrast */
+            margin: 10px 0; 
+            font-size: 1.5em; 
+            color: #333; 
         }
         #journalSection {
-            margin: 20px 0; /* Add some margin for spacing */
-            font-size: 1.2em; /* Font size for journal */
+            margin: 20px 0; 
+            font-size: 1.2em; 
         }
         input[type="date"], textarea {
-            font-size: 1.5em; /* Larger input field text */
+            font-size: 1.5em; 
             padding: 10px;
-            width: 100%; /* Full width for mobile responsiveness */
-            max-width: 300px; /* Limit max width on larger screens */
-            box-sizing: border-box; /* Ensure padding is included in width */
-            margin: 10px 0; /* Spacing between inputs */
+            width: 100%; 
+            max-width: 300px; 
+            box-sizing: border-box; 
+            margin: 10px 0; 
         }
         input[type="submit"], button {
             padding: 12px 20px;
@@ -56,67 +56,51 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            font-size: 1.5em; /* Larger button text */
-            margin-top: 10px; /* Spacing above the buttons */
+            font-size: 1.5em; 
+            margin-top: 10px; 
         }
         input[type="submit"]:hover, button:hover {
-            background-color: #45a049; /* Darker green on hover */
+            background-color: #45a049; 
         }
         #updateButton {
-            position: absolute; /* Positioning the update button */
-            bottom: 70px; /* Distance from bottom, moved up */
-            right: 20px; /* Distance from right */
-            display: none; /* Initially hidden */
+            position: absolute; 
+            bottom: 70px; 
+            right: 20px; 
+            display: none; 
         }
-        /* Styles for milestone grid */
-        .milestone-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr); /* 3 columns */
-            gap: 20px; /* Gap between grid items */
-            margin: 20px 0; /* Margin around the grid */
+        #menuButton {
+            margin-bottom: 20px; /* Space above the menu button */
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.5em;
         }
-        .milestone {
-            position: relative;
-            text-align: center; /* Center text within each milestone */
-        }
-        .milestone img {
-            width: 100%; /* Full width for images */
-            height: auto; /* Maintain aspect ratio */
-            filter: grayscale(100%); /* Grey out images */
-            transition: filter 0.3s; /* Smooth transition for filter */
-        }
-        .milestone.active img {
-            filter: none; /* Remove greyscale for active milestones */
-        }
-        .milestone h3 {
-            font-size: 1.2em; /* Font size for milestone titles */
-            color: #4CAF50;
-            margin: 5px 0; /* Margin for title */
-        }
-        .milestone p {
-            font-size: 1em; /* Font size for percentage */
-            color: #333; /* Dark color for visibility */
+        #menuButton:hover {
+            background-color: #0056b3; /* Darker blue on hover */
         }
         #journalEntries {
-            text-align: left; /* Align journal entries to the left */
-            margin-top: 20px; /* Spacing above entries */
+            text-align: left; 
+            margin-top: 20px; 
         }
         .journal-entry {
-            background-color: #e8f5e9; /* Light green background for entries */
-            border: 1px solid #c8e6c9; /* Border color */
-            padding: 10px; /* Padding around entry */
-            margin: 5px 0; /* Spacing between entries */
-            border-radius: 5px; /* Rounded corners */
+            background-color: #e8f5e9; 
+            border: 1px solid #c8e6c9; 
+            padding: 10px; 
+            margin: 5px 0; 
+            border-radius: 5px; 
         }
         .entry-date {
-            font-size: 0.9em; /* Smaller font for dates */
-            color: #666; /* Grey color for date */
+            font-size: 0.9em; 
+            color: #666; 
         }
     </style>
 </head>
 <body>
     <h1>Sober Day Tracker</h1>
-    <img id="trackerImage" src="https://via.placeholder.com/200" alt="Sober Tracker Image"> <!-- Placeholder image; replace with your image URL -->
+    <img id="trackerImage" src="https://via.placeholder.com/200" alt="Sober Tracker Image">
     <p id="daysSober"></p>
     <div id="quoteSection"></div>
 
@@ -124,45 +108,14 @@
         <h2>Your Journal Entry</h2>
         <textarea id="journalEntry" rows="4" placeholder="Write your thoughts..."></textarea>
         <button id="saveJournalEntry">Save Entry</button>
-        <div id="journalEntries"></div> <!-- Journal entries will be displayed here -->
+        <div id="journalEntries"></div>
     </div>
 
-    <div class="milestone-grid">
-        <div class="milestone" id="milestone1">
-            <img src="https://via.placeholder.com/200" alt="1 Month Sober">
-            <h3>1 Month Sober</h3>
-            <p class="percentage">0%</p>
-        </div>
-        <div class="milestone" id="milestone2">
-            <img src="https://via.placeholder.com/200" alt="6 Months Sober">
-            <h3>6 Months Sober</h3>
-            <p class="percentage">0%</p>
-        </div>
-        <div class="milestone" id="milestone3">
-            <img src="https://via.placeholder.com/200" alt="1 Year Sober">
-            <h3>1 Year Sober</h3>
-            <p class="percentage">0%</p>
-        </div>
-        <div class="milestone" id="milestone4">
-            <img src="https://via.placeholder.com/200" alt="2 Years Sober">
-            <h3>2 Years Sober</h3>
-            <p class="percentage">0%</p>
-        </div>
-        <div class="milestone" id="milestone5">
-            <img src="https://via.placeholder.com/200" alt="5 Years Sober">
-            <h3>5 Years Sober</h3>
-            <p class="percentage">0%</p>
-        </div>
-        <div class="milestone" id="milestone6">
-            <img src="https://via.placeholder.com/200" alt="10 Years Sober">
-            <h3>10 Years Sober</h3>
-            <p class="percentage">0%</p>
-        </div>
-    </div>
+    <button id="menuButton" onclick="location.href='milestones.html'">Go to Milestones</button> <!-- Menu button for navigation -->
 
-    <button id="updateButton">Update Date</button> <!-- Moved to bottom right -->
+    <button id="updateButton">Update Date</button>
 
-    <form id="dateForm" style="display: none;"> <!-- Ensure form is present -->
+    <form id="dateForm" style="display: none;">
         <label for="soberDate" style="font-size: 1.5em;">Enter the date you stopped drinking:</label><br><br>
         <input type="date" id="soberDate" name="soberDate" required><br><br>
         <input type="submit" value="Submit">
@@ -171,16 +124,16 @@
     <script>
         window.onload = function() {
             let storedDate = localStorage.getItem("soberDate");
-            let journalEntries = JSON.parse(localStorage.getItem("journalEntries")) || []; // Load journal entries
+            let journalEntries = JSON.parse(localStorage.getItem("journalEntries")) || [];
 
             if (storedDate) {
                 calculateDaysSober(storedDate);
             } else {
-                document.getElementById("dateForm").style.display = "block"; // Show form if no date stored
+                document.getElementById("dateForm").style.display = "block"; 
             }
 
-            displayJournalEntries(journalEntries); // Display loaded journal entries
-            displayRandomQuote(); // Display a random quote when the page loads
+            displayJournalEntries(journalEntries); 
+            displayRandomQuote(); 
         }
 
         document.getElementById("dateForm").onsubmit = function(e) {
@@ -193,19 +146,19 @@
         }
 
         document.getElementById("updateButton").onclick = function() {
-            document.getElementById("dateForm").style.display = "block"; // Show form to update date
-            document.getElementById("soberDate").value = localStorage.getItem("soberDate"); // Pre-fill the date
+            document.getElementById("dateForm").style.display = "block"; 
+            document.getElementById("soberDate").value = localStorage.getItem("soberDate"); 
         }
 
         document.getElementById("saveJournalEntry").onclick = function() {
             const journalEntry = document.getElementById("journalEntry").value;
-            const dateAdded = new Date().toLocaleString(); // Get the current date and time
+            const dateAdded = new Date().toLocaleString(); 
             if (journalEntry) {
                 const newEntry = { text: journalEntry, date: dateAdded };
-                journalEntries.push(newEntry); // Add new entry to the array
-                localStorage.setItem("journalEntries", JSON.stringify(journalEntries)); // Save to local storage
-                displayJournalEntries(journalEntries); // Refresh displayed entries
-                document.getElementById("journalEntry").value = ""; // Clear input
+                journalEntries.push(newEntry); 
+                localStorage.setItem("journalEntries", JSON.stringify(journalEntries)); 
+                displayJournalEntries(journalEntries); 
+                document.getElementById("journalEntry").value = ""; 
             }
         }
 
@@ -215,43 +168,19 @@
             let diffTime = today - dateEntered;
             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             document.getElementById("daysSober").textContent = diffDays + " days sober!";
-            document.getElementById("dateForm").style.display = "none"; // Hide the form after submission
-            document.getElementById("updateButton").style.display = "inline"; // Show update button
-            
-            updateMilestones(diffDays); // Update milestones based on sober days
-        }
-
-        function updateMilestones(daysSober) {
-            const milestones = [
-                { days: 30, elementId: "milestone1" },
-                { days: 180, elementId: "milestone2" },
-                { days: 365, elementId: "milestone3" },
-                { days: 730, elementId: "milestone4" },
-                { days: 1825, elementId: "milestone5" },
-                { days: 3650, elementId: "milestone6" }
-            ];
-
-            milestones.forEach(milestone => {
-                const element = document.getElementById(milestone.elementId);
-                const percentage = Math.min((daysSober / milestone.days) * 100, 100); // Calculate percentage towards the milestone
-
-                if (daysSober >= milestone.days) {
-                    element.classList.add("active"); // Activate milestone
-                    element.querySelector('img').style.filter = 'none'; // Remove greyscale
-                }
-                element.querySelector('.percentage').textContent = percentage.toFixed(0) + "%"; // Set percentage
-            });
+            document.getElementById("dateForm").style.display = "none"; 
+            document.getElementById("updateButton").style.display = "inline"; 
         }
 
         function displayJournalEntries(entries) {
             const journalEntriesDiv = document.getElementById("journalEntries");
-            journalEntriesDiv.innerHTML = ""; // Clear previous entries
+            journalEntriesDiv.innerHTML = ""; 
 
             entries.forEach(entry => {
                 const entryDiv = document.createElement("div");
                 entryDiv.className = "journal-entry";
                 entryDiv.innerHTML = `<strong>${entry.text}</strong><br><span class="entry-date">${entry.date}</span>`;
-                journalEntriesDiv.appendChild(entryDiv); // Append new entry to the display
+                journalEntriesDiv.appendChild(entryDiv); 
             });
         }
 
