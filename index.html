@@ -97,6 +97,21 @@
             font-size: 1em; /* Font size for percentage */
             color: #333; /* Dark color for visibility */
         }
+        #journalEntries {
+            text-align: left; /* Align journal entries to the left */
+            margin-top: 20px; /* Spacing above entries */
+        }
+        .journal-entry {
+            background-color: #e8f5e9; /* Light green background for entries */
+            border: 1px solid #c8e6c9; /* Border color */
+            padding: 10px; /* Padding around entry */
+            margin: 5px 0; /* Spacing between entries */
+            border-radius: 5px; /* Rounded corners */
+        }
+        .entry-date {
+            font-size: 0.9em; /* Smaller font for dates */
+            color: #666; /* Grey color for date */
+        }
     </style>
 </head>
 <body>
@@ -109,6 +124,7 @@
         <h2>Your Journal Entry</h2>
         <textarea id="journalEntry" rows="4" placeholder="Write your thoughts..."></textarea>
         <button id="saveJournalEntry">Save Entry</button>
+        <div id="journalEntries"></div> <!-- Journal entries will be displayed here -->
     </div>
 
     <div class="milestone-grid">
@@ -155,7 +171,7 @@
     <script>
         window.onload = function() {
             let storedDate = localStorage.getItem("soberDate");
-            let journalEntry = localStorage.getItem("journalEntry");
+            let journalEntries = JSON.parse(localStorage.getItem("journalEntries")) || []; // Load journal entries
 
             if (storedDate) {
                 calculateDaysSober(storedDate);
@@ -163,10 +179,7 @@
                 document.getElementById("dateForm").style.display = "block"; // Show form if no date stored
             }
 
-            if (journalEntry) {
-                document.getElementById("journalEntry").value = journalEntry; // Load journal entry if exists
-            }
-
+            displayJournalEntries(journalEntries); // Display loaded journal entries
             displayRandomQuote(); // Display a random quote when the page loads
         }
 
@@ -181,14 +194,19 @@
 
         document.getElementById("updateButton").onclick = function() {
             document.getElementById("dateForm").style.display = "block"; // Show form to update date
-            document.getElementById("soberDate").value = localStorage.getItem("soberDate"); // Set current date in the input
-            this.style.display = "none"; // Hide the update button
+            document.getElementById("soberDate").value = localStorage.getItem("soberDate"); // Pre-fill the date
         }
 
         document.getElementById("saveJournalEntry").onclick = function() {
-            let entry = document.getElementById("journalEntry").value;
-            localStorage.setItem("journalEntry", entry); // Save the journal entry
-            alert("Journal entry saved!"); // Confirmation message
+            const journalEntry = document.getElementById("journalEntry").value;
+            const dateAdded = new Date().toLocaleString(); // Get the current date and time
+            if (journalEntry) {
+                const newEntry = { text: journalEntry, date: dateAdded };
+                journalEntries.push(newEntry); // Add new entry to the array
+                localStorage.setItem("journalEntries", JSON.stringify(journalEntries)); // Save to local storage
+                displayJournalEntries(journalEntries); // Refresh displayed entries
+                document.getElementById("journalEntry").value = ""; // Clear input
+            }
         }
 
         function calculateDaysSober(soberDate) {
@@ -222,6 +240,18 @@
                     element.querySelector('img').style.filter = 'none'; // Remove greyscale
                 }
                 element.querySelector('.percentage').textContent = percentage.toFixed(0) + "%"; // Set percentage
+            });
+        }
+
+        function displayJournalEntries(entries) {
+            const journalEntriesDiv = document.getElementById("journalEntries");
+            journalEntriesDiv.innerHTML = ""; // Clear previous entries
+
+            entries.forEach(entry => {
+                const entryDiv = document.createElement("div");
+                entryDiv.className = "journal-entry";
+                entryDiv.innerHTML = `<strong>${entry.text}</strong><br><span class="entry-date">${entry.date}</span>`;
+                journalEntriesDiv.appendChild(entryDiv); // Append new entry to the display
             });
         }
 
