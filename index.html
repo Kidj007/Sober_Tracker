@@ -9,65 +9,51 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            overflow-x: hidden; /* Prevent horizontal scroll */
-        }
-        h1 {
-            text-align: center;
-            margin-top: 20px;
-        }
-        .quote {
-            text-align: center;
-            font-style: italic;
-            margin: 20px;
-        }
-        .menu {
-            cursor: pointer;
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-        }
-        .menu-bar {
-            width: 30px;
-            height: 3px;
-            background-color: black;
-            margin: 5px 0;
-            transition: 0.3s;
+            background-color: #f0f0f0;
         }
         .sidebar {
             position: fixed;
-            left: -250px; /* Hide sidebar off-screen */
+            top: 0; /* Start from the top */
+            left: -250px; /* Initially hidden */
             width: 250px;
-            height: 100%;
+            height: 100%; /* Full height */
             background-color: #f8f8f8;
             box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
             transition: left 0.3s ease;
             z-index: 5;
         }
         .sidebar.active {
-            left: 0; /* Slide in when active */
+            left: 0; /* Show sidebar */
         }
         .sidebar h2 {
             text-align: center;
         }
         .sidebar a {
             display: block;
-            padding: 15px;
+            padding: 10px;
             text-decoration: none;
-            color: black;
+            color: #333;
+        }
+        .hamburger {
+            cursor: pointer;
+            font-size: 30px;
+            padding: 10px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            z-index: 6; /* Ensure the hamburger is above the sidebar */
+        }
+        h1 {
             text-align: center;
         }
-        .sidebar a:hover {
-            background-color: #ddd;
-        }
-        .days-sober {
+        .quote {
             text-align: center;
-            font-size: 24px;
-            margin-top: 20px;
+            margin: 20px 0;
+            font-size: 20px;
         }
-        #updateButton {
+        #updateDateButton {
             display: block;
-            margin: 20px auto;
+            margin: 0 auto;
             padding: 10px 20px;
             background-color: #007BFF;
             color: white;
@@ -75,20 +61,14 @@
             border-radius: 5px;
             cursor: pointer;
         }
-        #updateButton:hover {
+        #updateDateButton:hover {
             background-color: #0056b3;
         }
     </style>
 </head>
 <body>
-    <!-- Hamburger Menu -->
-    <div class="menu" onclick="toggleMenu()">
-        <div class="menu-bar"></div>
-        <div class="menu-bar"></div>
-        <div class="menu-bar"></div>
-    </div>
 
-    <!-- Sidebar -->
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div class="sidebar" id="sidebar">
         <h2>Menu</h2>
         <a href="index.html">Home</a>
@@ -96,51 +76,21 @@
     </div>
 
     <h1>Sober Day Tracker</h1>
-    <div class="days-sober" id="daysSober">0 Days Sober!</div>
-    <div class="quote" id="quote"></div>
-    <button id="updateButton" onclick="updateDate()">Update Date</button>
+    <div class="quote" id="quote">“Every accomplishment starts with the decision to try.” — John F. Kennedy</div>
+    <button id="updateDateButton" onclick="updateDate()">Update Date</button>
 
     <script>
-        window.onload = function() {
-            const storedDate = localStorage.getItem("soberDate");
-            if (storedDate) {
-                const daysSober = calculateDaysSober(storedDate);
-                document.getElementById('daysSober').textContent = daysSober + " Days Sober!";
-                displayRandomQuote();
-            }
-        }
-
-        function calculateDaysSober(soberDate) {
-            let today = new Date();
-            let dateEntered = new Date(soberDate);
-            let diffTime = today - dateEntered;
-            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        }
-
-        function displayRandomQuote() {
-            const quotes = [
-                "The journey of a thousand miles begins with one step. — Lao Tzu",
-                "Every accomplishment starts with the decision to try. — John F. Kennedy",
-                "What lies behind us and what lies before us are tiny matters compared to what lies within us. — Ralph Waldo Emerson",
-                "Your life is your story, and the adventure ahead of you is the journey to fulfill your own purpose and potential. — Kerry Washington",
-                "It does not matter how slowly you go as long as you do not stop. — Confucius"
-            ];
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quote').textContent = randomQuote;
-        }
-
+        // Functionality for updating the date and displaying the quote
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         }
 
         function updateDate() {
-            const dateInput = prompt("Enter your sobriety start date (YYYY-MM-DD):");
-            if (dateInput) {
-                localStorage.setItem("soberDate", dateInput);
-                const daysSober = calculateDaysSober(dateInput);
-                document.getElementById('daysSober').textContent = daysSober + " Days Sober!";
-                displayRandomQuote();
+            const date = prompt("Please enter the sobriety start date (YYYY-MM-DD):");
+            if (date) {
+                localStorage.setItem("soberDate", date);
+                alert("Date updated! You can now track your sobriety.");
             }
         }
     </script>
