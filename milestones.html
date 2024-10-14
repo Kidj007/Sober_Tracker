@@ -8,88 +8,67 @@
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        h1 {
-            text-align: center;
-        }
-        /* Hamburger Menu Styles */
-        .menu {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            cursor: pointer;
-            z-index: 1000;
-        }
-        .menu-bar {
-            display: block;
-            width: 35px;
-            height: 4px;
-            margin: 6px 0;
-            background-color: #333;
-            transition: 0.4s;
+            padding: 0;
+            background-color: #f0f0f0;
         }
         .sidebar {
             position: fixed;
-            top: 0;
-            left: -250px; /* Completely off-screen */
+            left: -250px; /* Initially hidden */
             width: 250px;
             height: 100%;
-            background-color: #fff;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
-            padding: 20px;
-            transition: left 0.3s ease; /* Smooth transition */
-            z-index: 999;
+            background-color: #f8f8f8;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
+            transition: left 0.3s ease;
+            z-index: 5;
+        }
+        .sidebar.active {
+            left: 0; /* Show sidebar */
+        }
+        .sidebar h2 {
+            text-align: center;
         }
         .sidebar a {
             display: block;
             padding: 10px;
-            color: #333;
             text-decoration: none;
-            margin: 10px 0;
+            color: #333;
         }
-        .sidebar a:hover {
-            background-color: #f4f4f4;
+        .hamburger {
+            cursor: pointer;
+            font-size: 30px;
+            padding: 10px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
         }
-        /* Show sidebar when active */
-        .sidebar.active {
-            left: 0; /* Bring into view */
-        }
-        /* Milestone Styles */
         .milestones {
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            margin-top: 20px;
+            padding: 20px;
         }
         .milestone {
-            width: 150px;
-            height: 150px;
-            background-color: #d3d3d3; /* Greyed out */
+            width: 30%;
             margin: 10px;
+            padding: 10px;
+            background-color: white;
+            border: 1px solid #ccc;
             border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            opacity: 0.5; /* Greyed out effect */
+            text-align: center;
+            opacity: 0.5; /* Start as greyed out */
             transition: opacity 0.3s ease;
         }
         .milestone.active {
-            opacity: 1; /* Reveal the image */
+            opacity: 1; /* Revealed when active */
         }
         .milestone img {
-            display: none; /* Hide images initially */
             width: 100%;
             height: auto;
-            border-radius: 8px;
+            display: none; /* Hide the image initially */
         }
         #backButton {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
+            margin: 20px;
+            padding: 10px;
             background-color: #007BFF;
             color: white;
             border: none;
@@ -102,21 +81,15 @@
     </style>
 </head>
 <body>
-    <!-- Hamburger Menu -->
-    <div class="menu" onclick="toggleMenu()">
-        <div class="menu-bar"></div>
-        <div class="menu-bar"></div>
-        <div class="menu-bar"></div>
-    </div>
 
-    <!-- Sidebar -->
+    <div class="hamburger" onclick="toggleMenu()">☰</div>
     <div class="sidebar" id="sidebar">
         <h2>Menu</h2>
         <a href="index.html">Home</a>
         <a href="milestones.html">Milestones</a>
     </div>
 
-    <h1>Sober Milestones</h1>
+    <h1 style="text-align: center;">Milestones</h1>
 
     <div class="milestones">
         <div class="milestone" id="milestone1">
@@ -151,7 +124,7 @@
         </div>
     </div>
 
-    <button id="backButton" onclick="goBack()">Go Back</button>
+    <button id="backButton" onclick="goBack()">Back</button>
 
     <script>
         window.onload = function() {
@@ -171,25 +144,25 @@
 
         function updateMilestones(daysSober) {
             const milestones = [
-                { id: 'milestone1', goal: 30, percentageId: 'percentage1' },
-                { id: 'milestone2', goal: 180, percentageId: 'percentage2' },
-                { id: 'milestone3', goal: 365, percentageId: 'percentage3' },
-                { id: 'milestone4', goal: 730, percentageId: 'percentage4' },
-                { id: 'milestone5', goal: 1825, percentageId: 'percentage5' },
-                { id: 'milestone6', goal: 3650, percentageId: 'percentage6' }
+                { id: "milestone1", threshold: 30 },
+                { id: "milestone2", threshold: 180 },
+                { id: "milestone3", threshold: 365 },
+                { id: "milestone4", threshold: 730 },
+                { id: "milestone5", threshold: 1825 },
+                { id: "milestone6", threshold: 3650 },
             ];
 
             milestones.forEach(milestone => {
                 const milestoneElement = document.getElementById(milestone.id);
-                const percentageElement = document.getElementById(milestone.percentageId);
+                const percentageElement = document.getElementById("percentage" + milestone.id.charAt(milestone.id.length - 1));
                 
-                if (daysSober >= milestone.goal) {
+                if (daysSober >= milestone.threshold) {
                     milestoneElement.classList.add('active');
-                    percentageElement.textContent = "100%";
-                    milestoneElement.querySelector('img').style.display = "block"; // Show the image
+                    milestoneElement.querySelector('img').style.display = 'block'; // Show the image
+                    percentageElement.textContent = "100%"; // Fully achieved
                 } else {
-                    const percentage = Math.floor((daysSober / milestone.goal) * 100);
-                    percentageElement.textContent = percentage + "%";
+                    const percentage = Math.floor((daysSober / milestone.threshold) * 100);
+                    percentageElement.textContent = percentage + "%"; // Show current percentage
                 }
             });
         }
@@ -200,7 +173,7 @@
         }
 
         function goBack() {
-            window.location.href = "index.html";
+            window.history.back(); // Go back to previous page
         }
     </script>
 </body>
