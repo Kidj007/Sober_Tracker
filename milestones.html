@@ -40,7 +40,7 @@
             background-color: #fff;
             box-shadow: 2px 0 5px rgba(0,0,0,0.5);
             padding: 20px;
-            transition: 0.3s;
+            transition: left 0.3s; /* Smooth transition */
             z-index: 999;
         }
         .sidebar a {
@@ -55,7 +55,7 @@
         }
         /* Show sidebar */
         .sidebar.active {
-            left: 0;
+            left: 0; /* Move into view */
         }
         /* Milestone Styles */
         .milestones {
