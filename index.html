@@ -97,7 +97,8 @@
         }
 
         function updateDate() {
-            const date = document.getElementById('dateInput').value;
+            const dateInput = document.getElementById('dateInput');
+            const date = dateInput.value;
             if (date) {
                 localStorage.setItem("soberDate", date);
                 calculateDaysSober(date);
