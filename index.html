@@ -37,12 +37,17 @@
             font-size: 1.5em; /* Font size for quotes */
             color: #333; /* Darker color for contrast */
         }
-        input[type="date"] {
+        #journalSection {
+            margin: 20px 0; /* Add some margin for spacing */
+            font-size: 1.2em; /* Font size for journal */
+        }
+        input[type="date"], textarea {
             font-size: 1.5em; /* Larger input field text */
             padding: 10px;
             width: 100%; /* Full width for mobile responsiveness */
             max-width: 300px; /* Limit max width on larger screens */
             box-sizing: border-box; /* Ensure padding is included in width */
+            margin: 10px 0; /* Spacing between inputs */
         }
         input[type="submit"], button {
             padding: 12px 20px;
@@ -59,9 +64,38 @@
         }
         #updateButton {
             position: absolute; /* Positioning the update button */
-            bottom: 100px; /* Distance from bottom, moved up from 20px to 70px */
+            bottom: 70px; /* Distance from bottom, moved up */
             right: 20px; /* Distance from right */
             display: none; /* Initially hidden */
+        }
+        /* Styles for milestone grid */
+        .milestone-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+            gap: 20px; /* Gap between grid items */
+            margin: 20px 0; /* Margin around the grid */
+        }
+        .milestone {
+            position: relative;
+            text-align: center; /* Center text within each milestone */
+        }
+        .milestone img {
+            width: 100%; /* Full width for images */
+            height: auto; /* Maintain aspect ratio */
+            filter: grayscale(100%); /* Grey out images */
+            transition: filter 0.3s; /* Smooth transition for filter */
+        }
+        .milestone.active img {
+            filter: none; /* Remove greyscale for active milestones */
+        }
+        .milestone h3 {
+            font-size: 1.2em; /* Font size for milestone titles */
+            color: #4CAF50;
+            margin: 5px 0; /* Margin for title */
+        }
+        .milestone p {
+            font-size: 1em; /* Font size for percentage */
+            color: #333; /* Dark color for visibility */
         }
     </style>
 </head>
@@ -70,6 +104,45 @@
     <img id="trackerImage" src="https://via.placeholder.com/200" alt="Sober Tracker Image"> <!-- Placeholder image; replace with your image URL -->
     <p id="daysSober"></p>
     <div id="quoteSection"></div>
+
+    <div id="journalSection">
+        <h2>Your Journal Entry</h2>
+        <textarea id="journalEntry" rows="4" placeholder="Write your thoughts..."></textarea>
+        <button id="saveJournalEntry">Save Entry</button>
+    </div>
+
+    <div class="milestone-grid">
+        <div class="milestone" id="milestone1">
+            <img src="https://via.placeholder.com/200" alt="1 Month Sober">
+            <h3>1 Month Sober</h3>
+            <p class="percentage">0%</p>
+        </div>
+        <div class="milestone" id="milestone2">
+            <img src="https://via.placeholder.com/200" alt="6 Months Sober">
+            <h3>6 Months Sober</h3>
+            <p class="percentage">0%</p>
+        </div>
+        <div class="milestone" id="milestone3">
+            <img src="https://via.placeholder.com/200" alt="1 Year Sober">
+            <h3>1 Year Sober</h3>
+            <p class="percentage">0%</p>
+        </div>
+        <div class="milestone" id="milestone4">
+            <img src="https://via.placeholder.com/200" alt="2 Years Sober">
+            <h3>2 Years Sober</h3>
+            <p class="percentage">0%</p>
+        </div>
+        <div class="milestone" id="milestone5">
+            <img src="https://via.placeholder.com/200" alt="5 Years Sober">
+            <h3>5 Years Sober</h3>
+            <p class="percentage">0%</p>
+        </div>
+        <div class="milestone" id="milestone6">
+            <img src="https://via.placeholder.com/200" alt="10 Years Sober">
+            <h3>10 Years Sober</h3>
+            <p class="percentage">0%</p>
+        </div>
+    </div>
 
     <button id="updateButton">Update Date</button> <!-- Moved to bottom right -->
 
@@ -82,11 +155,18 @@
     <script>
         window.onload = function() {
             let storedDate = localStorage.getItem("soberDate");
+            let journalEntry = localStorage.getItem("journalEntry");
+
             if (storedDate) {
                 calculateDaysSober(storedDate);
             } else {
                 document.getElementById("dateForm").style.display = "block"; // Show form if no date stored
             }
+
+            if (journalEntry) {
+                document.getElementById("journalEntry").value = journalEntry; // Load journal entry if exists
+            }
+
             displayRandomQuote(); // Display a random quote when the page loads
         }
 
@@ -105,6 +185,12 @@
             this.style.display = "none"; // Hide the update button
         }
 
+        document.getElementById("saveJournalEntry").onclick = function() {
+            let entry = document.getElementById("journalEntry").value;
+            localStorage.setItem("journalEntry", entry); // Save the journal entry
+            alert("Journal entry saved!"); // Confirmation message
+        }
+
         function calculateDaysSober(soberDate) {
             let today = new Date();
             let dateEntered = new Date(soberDate);
@@ -113,6 +199,30 @@
             document.getElementById("daysSober").textContent = diffDays + " days sober!";
             document.getElementById("dateForm").style.display = "none"; // Hide the form after submission
             document.getElementById("updateButton").style.display = "inline"; // Show update button
+            
+            updateMilestones(diffDays); // Update milestones based on sober days
+        }
+
+        function updateMilestones(daysSober) {
+            const milestones = [
+                { days: 30, elementId: "milestone1" },
+                { days: 180, elementId: "milestone2" },
+                { days: 365, elementId: "milestone3" },
+                { days: 730, elementId: "milestone4" },
+                { days: 1825, elementId: "milestone5" },
+                { days: 3650, elementId: "milestone6" }
+            ];
+
+            milestones.forEach(milestone => {
+                const element = document.getElementById(milestone.elementId);
+                const percentage = Math.min((daysSober / milestone.days) * 100, 100); // Calculate percentage towards the milestone
+
+                if (daysSober >= milestone.days) {
+                    element.classList.add("active"); // Activate milestone
+                    element.querySelector('img').style.filter = 'none'; // Remove greyscale
+                }
+                element.querySelector('.percentage').textContent = percentage.toFixed(0) + "%"; // Set percentage
+            });
         }
 
         function displayRandomQuote() {
@@ -123,8 +233,8 @@
                 "Your life is your story, and the adventure ahead of you is the journey to fulfill your own purpose and potential. — Kerry Washington",
                 "It does not matter how slowly you go as long as you do not stop. — Confucius"
             ];
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            document.getElementById("quoteSection").textContent = quotes[randomIndex];
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById("quoteSection").textContent = randomQuote;
         }
     </script>
 </body>
