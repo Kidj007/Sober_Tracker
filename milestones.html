@@ -7,15 +7,57 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0; 
-            padding: 20px; 
-            text-align: center;
-            background-color: #f7f7f7; 
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+            color: #333;
         }
         h1 {
-            color: #4CAF50;
-            margin: 10px 0; 
+            text-align: center;
         }
+        /* Hamburger Menu Styles */
+        .menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .menu-bar {
+            display: block;
+            width: 35px;
+            height: 4px;
+            margin: 6px 0;
+            background-color: #333;
+            transition: 0.4s;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -250px; /* Hidden by default */
+            width: 250px;
+            height: 100%;
+            background-color: #fff;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+            padding: 20px;
+            transition: 0.3s;
+            z-index: 999;
+        }
+        .sidebar a {
+            display: block;
+            padding: 10px;
+            color: #333;
+            text-decoration: none;
+            margin: 10px 0;
+        }
+        .sidebar a:hover {
+            background-color: #f4f4f4;
+        }
+        /* Show sidebar */
+        .sidebar.active {
+            left: 0;
+        }
+        /* Milestone Styles */
         .milestone-grid {
             display: grid; 
             grid-template-columns: repeat(3, 1fr); 
@@ -24,6 +66,7 @@
         }
         .milestone {
             position: relative; 
+            text-align: center;
         }
         .milestone img {
             width: 100%; 
@@ -57,6 +100,20 @@
     </style>
 </head>
 <body>
+    <!-- Hamburger Menu -->
+    <div class="menu" onclick="toggleMenu()">
+        <div class="menu-bar"></div>
+        <div class="menu-bar"></div>
+        <div class="menu-bar"></div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h2>Menu</h2>
+        <a href="index.html">Home</a>
+        <a href="milestones.html">Milestones</a>
+    </div>
+
     <h1>Milestones</h1>
     <div class="milestone-grid">
         <div id="milestone1" class="milestone">
@@ -90,7 +147,8 @@
             <div class="percentage">0%</div>
         </div>
     </div>
-    <button id="backButton" onclick="location.href='index.html'">Back to Tracker</button>
+
+    <button id="backButton" onclick="window.location.href='index.html'">Back to Home</button>
 
     <script>
         window.onload = function() {
@@ -110,23 +168,29 @@
 
         function updateMilestones(daysSober) {
             const milestones = [
-                { days: 30, elementId: "milestone1" },
-                { days: 180, elementId: "milestone2" },
-                { days: 365, elementId: "milestone3" },
-                { days: 730, elementId: "milestone4" },
-                { days: 1825, elementId: "milestone5" },
-                { days: 3650, elementId: "milestone6" }
+                { id: "milestone1", title: "1 Month Sober", days: 30 },
+                { id: "milestone2", title: "6 Months Sober", days: 180 },
+                { id: "milestone3", title: "1 Year Sober", days: 365 },
+                { id: "milestone4", title: "2 Years Sober", days: 730 },
+                { id: "milestone5", title: "5 Years Sober", days: 1825 },
+                { id: "milestone6", title: "10 Years Sober", days: 3650 }
             ];
 
             milestones.forEach(milestone => {
-                const element = document.getElementById(milestone.elementId);
-                const percentage = Math.min((daysSober / milestone.days) * 100, 100); 
-
+                const element = document.getElementById(milestone.id);
                 if (daysSober >= milestone.days) {
-                    element.classList.add("active"); 
+                    element.classList.add("active");
+                    element.querySelector('.percentage').textContent = "100%";
+                } else {
+                    const percentage = Math.floor((daysSober / milestone.days) * 100);
+                    element.querySelector('.percentage').textContent = percentage + "%";
                 }
-                element.querySelector('.percentage').textContent = percentage.toFixed(0) + "%"; 
             });
+        }
+
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
         }
     </script>
 </body>
