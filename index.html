@@ -1,6 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sober Day Tracker</title>
     <style>
         body {
@@ -10,36 +12,49 @@
         }
         h1 {
             color: #4CAF50;
+            font-size: 2.5em; /* Larger heading for better visibility */
+            margin-bottom: 20px;
         }
         #daysSober {
-            font-size: 24px;
+            font-size: 2em; /* Larger font for the sober days text */
             color: #4CAF50;
+            margin: 20px 0; /* Margin for spacing */
         }
         form {
             margin: 20px 0;
         }
-        input[type="submit"] {
+        input[type="date"] {
+            font-size: 1.5em; /* Larger input field text */
             padding: 10px;
+            width: 100%; /* Full width for mobile responsiveness */
+            max-width: 300px; /* Limit max width on larger screens */
+            box-sizing: border-box; /* Ensure padding is included in width */
+        }
+        input[type="submit"], button {
+            padding: 12px 20px;
             background-color: #4CAF50;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            font-size: 1.5em; /* Larger button text */
+            margin-top: 10px; /* Spacing above the buttons */
         }
-        input[type="submit"]:hover {
-            background-color: #45a049;
+        input[type="submit"]:hover, button:hover {
+            background-color: #45a049; /* Darker green on hover */
         }
     </style>
 </head>
 <body>
     <h1>Sober Day Tracker</h1>
     <form id="dateForm" style="display: none;">
-        <label for="soberDate">Enter the date you stopped drinking:</label><br><br>
+        <label for="soberDate" style="font-size: 1.5em;">Enter the date you stopped drinking:</label><br><br>
         <input type="date" id="soberDate" name="soberDate" required><br><br>
         <input type="submit" value="Submit">
     </form>
 
     <p id="daysSober"></p>
+    <button id="updateButton" style="display: none;">Update Date</button>
 
     <script>
         window.onload = function() {
@@ -60,6 +75,12 @@
             }
         }
 
+        document.getElementById("updateButton").onclick = function() {
+            document.getElementById("dateForm").style.display = "block";
+            document.getElementById("soberDate").value = localStorage.getItem("soberDate"); // Set current date in the input
+            this.style.display = "none"; // Hide the update button
+        }
+
         function calculateDaysSober(soberDate) {
             let today = new Date();
             let dateEntered = new Date(soberDate);
@@ -67,6 +88,7 @@
             let diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             document.getElementById("daysSober").textContent = diffDays + " days sober!";
             document.getElementById("dateForm").style.display = "none";
+            document.getElementById("updateButton").style.display = "inline"; // Show update button
         }
     </script>
 </body>
