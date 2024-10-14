@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sober Day Tracker - Milestones</title>
+    <title>Sober Milestones</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -50,41 +50,39 @@
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
-            padding: 20px;
+            margin: 20px;
         }
         .milestone {
-            width: 30%;
+            background-color: #ffffff;
+            border-radius: 10px;
             margin: 10px;
-            padding: 10px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
             text-align: center;
-            opacity: 0.5; /* Start as greyed out */
-            transition: opacity 0.3s ease;
+            width: 150px; /* Fixed width for milestone boxes */
+            opacity: 0.5; /* Initially greyed out */
+            transition: opacity 0.3s;
         }
-        .milestone.active {
-            opacity: 1; /* Revealed when active */
+        .milestone.visible {
+            opacity: 1; /* Reveal the milestone */
         }
-        .milestone img {
-            width: 100%;
-            height: auto;
-            display: none; /* Hide the image initially */
-        }
-        .percentage {
-            margin-top: 10px;
-        }
-        #backButton {
-            margin: 20px;
-            padding: 10px;
+        #updateDateButton {
+            position: fixed; /* Fixed position to stay at bottom right */
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
+            padding: 10px 20px;
             background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 6; /* Ensure the button is above other elements */
         }
-        #backButton:hover {
+        #updateDateButton:hover {
             background-color: #0056b3;
+        }
+        input[type="date"] {
+            display: none; /* Hide the date input initially */
         }
     </style>
 </head>
@@ -97,97 +95,90 @@
         <a href="milestones.html">Milestones</a>
     </div>
 
-    <h1 style="text-align: center;">Milestones</h1>
+    <h1>Sober Milestones</h1>
 
     <div class="milestones">
         <div class="milestone" id="milestone1">
-            <img src="1month.png" alt="1 Month Sober">
-            <div class="milestone-title">1 Month Sober</div>
-            <div class="percentage" id="percentage1">0%</div>
+            <h3>1 Month Sober</h3>
+            <p id="milestone1Progress">0%</p>
         </div>
         <div class="milestone" id="milestone2">
-            <img src="6months.png" alt="6 Months Sober">
-            <div class="milestone-title">6 Months Sober</div>
-            <div class="percentage" id="percentage2">0%</div>
+            <h3>6 Months Sober</h3>
+            <p id="milestone2Progress">0%</p>
         </div>
         <div class="milestone" id="milestone3">
-            <img src="1year.png" alt="1 Year Sober">
-            <div class="milestone-title">1 Year Sober</div>
-            <div class="percentage" id="percentage3">0%</div>
+            <h3>1 Year Sober</h3>
+            <p id="milestone3Progress">0%</p>
         </div>
         <div class="milestone" id="milestone4">
-            <img src="2years.png" alt="2 Years Sober">
-            <div class="milestone-title">2 Years Sober</div>
-            <div class="percentage" id="percentage4">0%</div>
+            <h3>2 Years Sober</h3>
+            <p id="milestone4Progress">0%</p>
         </div>
         <div class="milestone" id="milestone5">
-            <img src="5years.png" alt="5 Years Sober">
-            <div class="milestone-title">5 Years Sober</div>
-            <div class="percentage" id="percentage5">0%</div>
+            <h3>5 Years Sober</h3>
+            <p id="milestone5Progress">0%</p>
         </div>
         <div class="milestone" id="milestone6">
-            <img src="10years.png" alt="10 Years Sober">
-            <div class="milestone-title">10 Years Sober</div>
-            <div class="percentage" id="percentage6">0%</div>
+            <h3>10 Years Sober</h3>
+            <p id="milestone6Progress">0%</p>
         </div>
     </div>
 
-    <button id="backButton" onclick="goBack()">Back</button>
+    <input type="date" id="dateInput" onchange="updateDate()">
+    <button id="updateDateButton" onclick="document.getElementById('dateInput').click();">Update Date</button>
 
     <script>
-        const milestones = [
-            { id: "milestone1", threshold: 30 },
-            { id: "milestone2", threshold: 180 },
-            { id: "milestone3", threshold: 365 },
-            { id: "milestone4", threshold: 730 },
-            { id: "milestone5", threshold: 1825 },
-            { id: "milestone6", threshold: 3650 },
-        ];
-
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         }
 
-        function calculateDaysSober(soberDate) {
+        function updateDate() {
+            const dateInput = document.getElementById('dateInput');
+            const date = dateInput.value;
+            if (date) {
+                localStorage.setItem("soberDate", date);
+                calculateMilestones(date);
+                alert("Sobriety start date updated!");
+            }
+        }
+
+        function calculateMilestones(soberDate) {
             const dateEntered = new Date(soberDate);
             const today = new Date();
             const diffTime = today - dateEntered;
+            const daysSober = Math.floor(diffTime / (1000 * 60 * 60 * 24));
 
-            if (isNaN(diffTime)) {
-                return 0; // Return 0 days sober if the date is invalid
-            } else {
-                return Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            }
-        }
+            // Milestone thresholds in days
+            const milestones = [
+                { element: "milestone1", threshold: 30 }, // 1 Month
+                { element: "milestone2", threshold: 183 }, // 6 Months
+                { element: "milestone3", threshold: 365 }, // 1 Year
+                { element: "milestone4", threshold: 730 }, // 2 Years
+                { element: "milestone5", threshold: 1825 }, // 5 Years
+                { element: "milestone6", threshold: 3650 }, // 10 Years
+            ];
 
-        // On load, calculate the sober days if the date is stored
-        window.onload = function() {
-            const storedDate = localStorage.getItem("soberDate");
-            if (storedDate) {
-                const daysSober = calculateDaysSober(storedDate);
-                updateMilestones(daysSober);
-            }
-        }
-
-        function updateMilestones(daysSober) {
             milestones.forEach(milestone => {
-                const milestoneElement = document.getElementById(milestone.id);
-                const percentageElement = document.getElementById("percentage" + milestone.id.charAt(milestone.id.length - 1));
-                
+                const milestoneElement = document.getElementById(milestone.element);
                 if (daysSober >= milestone.threshold) {
-                    milestoneElement.classList.add('active');
-                    milestoneElement.querySelector('img').style.display = 'block'; // Show the image
-                    percentageElement.textContent = "100%"; // Fully achieved
+                    milestoneElement.classList.add("visible");
+                    const progressPercentage = ((daysSober / milestone.threshold) * 100).toFixed(0);
+                    document.getElementById(milestone.element + "Progress").textContent = progressPercentage + "%";
                 } else {
-                    const percentage = Math.floor((daysSober / milestone.threshold) * 100);
-                    percentageElement.textContent = percentage + "%"; // Show current percentage
+                    milestoneElement.classList.remove("visible");
+                    document.getElementById(milestone.element + "Progress").textContent = "0%";
                 }
             });
         }
 
-        function goBack() {
-            window.history.back(); // Go back to previous page
+        // On load, calculate the milestones if the date is stored
+        window.onload = function() {
+            const storedDate = localStorage.getItem("soberDate");
+            if (storedDate) {
+                document.getElementById('dateInput').value = storedDate; // Set the value in the date input
+                calculateMilestones(storedDate);
+            }
         }
     </script>
 </body>
