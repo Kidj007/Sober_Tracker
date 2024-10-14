@@ -74,29 +74,17 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            position: relative;
-            overflow: hidden;
-            transition: background-color 0.3s;
+            opacity: 0.5; /* Greyed out effect */
+            transition: opacity 0.3s ease;
         }
         .milestone.active {
-            background-color: #28a745; /* Green when active */
+            opacity: 1; /* Reveal the image */
         }
         .milestone img {
-            width: 80%;
+            display: none; /* Hide images initially */
+            width: 100%;
             height: auto;
-            display: none; /* Initially hidden */
-        }
-        .milestone.active img {
-            display: block; /* Show when active */
-        }
-        .milestone-title {
-            font-weight: bold;
-            margin-top: 10px;
-        }
-        .percentage {
-            position: absolute;
-            bottom: 10px;
-            font-size: 0.8em;
+            border-radius: 8px;
         }
         #backButton {
             display: block;
