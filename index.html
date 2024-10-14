@@ -9,6 +9,7 @@
             font-family: Arial, sans-serif;
             margin: 20px;
             text-align: center;
+            position: relative; /* For positioning the button */
         }
         h1 {
             color: #4CAF50;
@@ -43,6 +44,16 @@
         input[type="submit"]:hover, button:hover {
             background-color: #45a049; /* Darker green on hover */
         }
+        #updateButton {
+            position: absolute; /* Positioning the update button */
+            bottom: 20px; /* Distance from bottom */
+            right: 20px; /* Distance from right */
+        }
+        #quoteSection {
+            margin-top: 30px; /* Spacing above the quotes section */
+            font-size: 1.5em; /* Font size for quotes */
+            color: #333; /* Darker color for contrast */
+        }
     </style>
 </head>
 <body>
@@ -54,6 +65,7 @@
     </form>
 
     <p id="daysSober"></p>
+    <div id="quoteSection"></div>
     <button id="updateButton" style="display: none;">Update Date</button>
 
     <script>
@@ -64,6 +76,7 @@
             } else {
                 document.getElementById("dateForm").style.display = "block";
             }
+            displayRandomQuote(); // Display a random quote when the page loads
         }
 
         document.getElementById("dateForm").onsubmit = function(e) {
@@ -89,6 +102,18 @@
             document.getElementById("daysSober").textContent = diffDays + " days sober!";
             document.getElementById("dateForm").style.display = "none";
             document.getElementById("updateButton").style.display = "inline"; // Show update button
+        }
+
+        function displayRandomQuote() {
+            const quotes = [
+                "The journey of a thousand miles begins with one step. — Lao Tzu",
+                "Every accomplishment starts with the decision to try. — John F. Kennedy",
+                "What lies behind us and what lies before us are tiny matters compared to what lies within us. — Ralph Waldo Emerson",
+                "Your life is your story, and the adventure ahead of you is the journey to fulfill your own purpose and potential. — Kerry Washington",
+                "It does not matter how slowly you go as long as you do not stop. — Confucius"
+            ];
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById("quoteSection").textContent = quotes[randomIndex];
         }
     </script>
 </body>
