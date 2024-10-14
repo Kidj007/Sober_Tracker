@@ -71,6 +71,9 @@
             height: auto;
             display: none; /* Hide the image initially */
         }
+        .percentage {
+            margin-top: 10px;
+        }
         #backButton {
             margin: 20px;
             padding: 10px;
@@ -132,6 +135,28 @@
     <button id="backButton" onclick="goBack()">Back</button>
 
     <script>
+        const milestones = [
+            { id: "milestone1", threshold: 30 },
+            { id: "milestone2", threshold: 180 },
+            { id: "milestone3", threshold: 365 },
+            { id: "milestone4", threshold: 730 },
+            { id: "milestone5", threshold: 1825 },
+            { id: "milestone6", threshold: 3650 },
+        ];
+
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        function calculateDaysSober(soberDate) {
+            const dateEntered = new Date(soberDate);
+            const today = new Date();
+            const diffTime = today - dateEntered;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        // On load, calculate the sober days if the date is stored
         window.onload = function() {
             const storedDate = localStorage.getItem("soberDate");
             if (storedDate) {
@@ -140,23 +165,7 @@
             }
         }
 
-        function calculateDaysSober(soberDate) {
-            let today = new Date();
-            let dateEntered = new Date(soberDate);
-            let diffTime = today - dateEntered;
-            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
-        }
-
         function updateMilestones(daysSober) {
-            const milestones = [
-                { id: "milestone1", threshold: 30 },
-                { id: "milestone2", threshold: 180 },
-                { id: "milestone3", threshold: 365 },
-                { id: "milestone4", threshold: 730 },
-                { id: "milestone5", threshold: 1825 },
-                { id: "milestone6", threshold: 3650 },
-            ];
-
             milestones.forEach(milestone => {
                 const milestoneElement = document.getElementById(milestone.id);
                 const percentageElement = document.getElementById("percentage" + milestone.id.charAt(milestone.id.length - 1));
@@ -170,11 +179,6 @@
                     percentageElement.textContent = percentage + "%"; // Show current percentage
                 }
             });
-        }
-
-        function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
         }
 
         function goBack() {
