@@ -13,20 +13,27 @@
             min-height: 100vh; /* Ensures body is at least full height */
             display: flex; /* Flexbox for vertical centering */
             flex-direction: column; /* Stack items vertically */
-            justify-content: space-between; /* Space items evenly */
+            justify-content: flex-start; /* Align items at the top */
         }
         h1 {
             color: #4CAF50;
             font-size: 2.5em; /* Larger heading for better visibility */
-            margin-bottom: 20px;
+            margin-bottom: 10px; /* Reduced bottom margin */
+        }
+        #trackerImage {
+            width: 200px; /* Set image width */
+            height: 200px; /* Set image height */
+            margin: 10px auto; /* Center the image with margin */
         }
         #daysSober {
             font-size: 2em; /* Larger font for the sober days text */
             color: #4CAF50;
-            margin: 20px 0; /* Margin for spacing */
+            margin: 10px 0; /* Reduced margin for spacing */
         }
-        form {
-            margin: 20px 0;
+        #quoteSection {
+            margin: 10px 0; /* Reduced margin for spacing */
+            font-size: 1.5em; /* Font size for quotes */
+            color: #333; /* Darker color for contrast */
         }
         input[type="date"] {
             font-size: 1.5em; /* Larger input field text */
@@ -54,21 +61,11 @@
             right: 20px; /* Distance from right */
             display: none; /* Initially hidden */
         }
-        #quoteSection {
-            margin-top: 30px; /* Spacing above the quotes section */
-            font-size: 1.5em; /* Font size for quotes */
-            color: #333; /* Darker color for contrast */
-        }
     </style>
 </head>
 <body>
     <h1>Sober Day Tracker</h1>
-    <form id="dateForm" style="display: none;">
-        <label for="soberDate" style="font-size: 1.5em;">Enter the date you stopped drinking:</label><br><br>
-        <input type="date" id="soberDate" name="soberDate" required><br><br>
-        <input type="submit" value="Submit">
-    </form>
-
+    <img id="trackerImage" src="https://via.placeholder.com/200" alt="Sober Tracker Image"> <!-- Replace with your image URL -->
     <p id="daysSober"></p>
     <div id="quoteSection"></div>
     
