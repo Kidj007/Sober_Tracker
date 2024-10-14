@@ -153,7 +153,12 @@
             const dateEntered = new Date(soberDate);
             const today = new Date();
             const diffTime = today - dateEntered;
-            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+
+            if (isNaN(diffTime)) {
+                return 0; // Return 0 days sober if the date is invalid
+            } else {
+                return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+            }
         }
 
         // On load, calculate the sober days if the date is stored
