@@ -51,6 +51,11 @@
             margin: 20px 0;
             font-size: 20px;
         }
+        .days-sober {
+            text-align: center;
+            font-size: 24px; /* Increased font size for visibility */
+            margin: 20px 0;
+        }
         #updateDateButton {
             display: block;
             margin: 0 auto;
@@ -100,8 +105,13 @@
             const dateEntered = new Date(soberDate);
             const today = new Date();
             const diffTime = today - dateEntered;
-            const daysSober = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            document.getElementById('daysCount').textContent = daysSober;
+
+            if (isNaN(diffTime)) {
+                document.getElementById('daysCount').textContent = "0";
+            } else {
+                const daysSober = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+                document.getElementById('daysCount').textContent = daysSober;
+            }
         }
 
         // On load, calculate the sober days if the date is stored
