@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Milestones</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0; 
+            padding: 20px; 
+            text-align: center;
+            background-color: #f7f7f7; 
+        }
+        h1 {
+            color: #4CAF50;
+            margin: 10px 0; 
+        }
+        .milestone-grid {
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; 
+            margin: 20px 0; 
+        }
+        .milestone {
+            position: relative; 
+        }
+        .milestone img {
+            width: 100%; 
+            filter: grayscale(100%); 
+            transition: filter 0.3s; 
+        }
+        .milestone.active img {
+            filter: none; 
+        }
+        .milestone-title {
+            margin-top: 10px; 
+            font-size: 1.2em; 
+            color: #333; 
+        }
+        .percentage {
+            font-size: 1em; 
+            color: #666; 
+        }
+        #backButton {
+            margin-top: 20px; 
+            padding: 10px 20px; 
+            background-color: #007BFF; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+        }
+        #backButton:hover {
+            background-color: #0056b3; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Milestones</h1>
+    <div class="milestone-grid">
+        <div id="milestone1" class="milestone">
+            <img src="https://via.placeholder.com/150" alt="1 Month Sober">
+            <div class="milestone-title">1 Month Sober</div>
+            <div class="percentage">0%</div>
+        </div>
+        <div id="milestone2" class="milestone">
+            <img src="https://via.placeholder.com/150" alt="6 Months Sober">
+            <div class="milestone-title">6 Months Sober</div>
+            <div class="percentage">0%</div>
+        </div>
+        <div id="milestone3" class="milestone">
+            <img src="https://via.placeholder.com/150" alt="1 Year Sober">
+            <div class="milestone-title">1 Year Sober</div>
+            <div class="percentage">0%</div>
+        </div>
+        <div id="milestone4" class="milestone">
+            <img src="https://via.placeholder.com/150" alt="2 Years Sober">
+            <div class="milestone-title">2 Years Sober</div>
+            <div class="percentage">0%</div>
+        </div>
+        <div id="milestone5" class="milestone">
+            <img src="https://via.placeholder.com/150" alt="5 Years Sober">
+            <div class="milestone-title">5 Years Sober</div>
+            <div class="percentage">0%</div>
+        </div>
+        <div id="milestone6" class="milestone">
+            <img src="https://via.placeholder.com/150" alt="10 Years Sober">
+            <div class="milestone-title">10 Years Sober</div>
+            <div class="percentage">0%</div>
+        </div>
+    </div>
+    <button id="backButton" onclick="location.href='index.html'">Back to Tracker</button>
+
+    <script>
+        window.onload = function() {
+            const storedDate = localStorage.getItem("soberDate");
+            if (storedDate) {
+                const daysSober = calculateDaysSober(storedDate);
+                updateMilestones(daysSober);
+            }
+        }
+
+        function calculateDaysSober(soberDate) {
+            let today = new Date();
+            let dateEntered = new Date(soberDate);
+            let diffTime = today - dateEntered;
+            return Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        }
+
+        function updateMilestones(daysSober) {
+            const milestones = [
+                { days: 30, elementId: "milestone1" },
+                { days: 180, elementId: "milestone2" },
+                { days: 365, elementId: "milestone3" },
+                { days: 730, elementId: "milestone4" },
+                { days: 1825, elementId: "milestone5" },
+                { days: 3650, elementId: "milestone6" }
+            ];
+
+            milestones.forEach(milestone => {
+                const element = document.getElementById(milestone.elementId);
+                const percentage = Math.min((daysSober / milestone.days) * 100, 100); 
+
+                if (daysSober >= milestone.days) {
+                    element.classList.add("active"); 
+                }
+                element.querySelector('.percentage').textContent = percentage.toFixed(0) + "%"; 
+            });
+        }
+    </script>
+</body>
+</html>
