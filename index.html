@@ -57,14 +57,16 @@
             margin: 20px 0;
         }
         #updateDateButton {
-            display: block;
-            margin: 20px auto; /* Center the button */
+            position: fixed; /* Fixed position to stay at bottom right */
+            bottom: 20px; /* Distance from the bottom */
+            right: 20px; /* Distance from the right */
             padding: 10px 20px;
             background-color: #007BFF;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            z-index: 6; /* Ensure the button is above other elements */
         }
         #updateDateButton:hover {
             background-color: #0056b3;
@@ -88,7 +90,7 @@
     <div class="days-sober" id="daysSober">Days Sober: <span id="daysCount">0</span></div>
     
     <input type="date" id="dateInput" onchange="updateDate()">
-    <button id="updateDateButton" onclick="document.getElementById('dateInput').click();">Update Sobriety Start Date</button>
+    <button id="updateDateButton" onclick="document.getElementById('dateInput').click();">Update Date</button>
 
     <script>
         function toggleMenu() {
