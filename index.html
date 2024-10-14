@@ -88,7 +88,7 @@
     <div class="days-sober" id="daysSober">Days Sober: <span id="daysCount">0</span></div>
     
     <input type="date" id="dateInput" onchange="updateDate()">
-    <button id="updateDateButton" onclick="document.getElementById('dateInput').click();">Select Sobriety Start Date</button>
+    <button id="updateDateButton" onclick="document.getElementById('dateInput').click();">Update Sobriety Start Date</button>
 
     <script>
         function toggleMenu() {
@@ -102,7 +102,7 @@
             if (date) {
                 localStorage.setItem("soberDate", date);
                 calculateDaysSober(date);
-                alert("Date updated! You can now track your sobriety.");
+                alert("Sobriety start date updated!");
             }
         }
 
