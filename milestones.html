@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Milestones</title>
+    <title>Sober Day Tracker - Milestones</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -58,44 +58,58 @@
             left: 0;
         }
         /* Milestone Styles */
-        .milestone-grid {
-            display: grid; 
-            grid-template-columns: repeat(3, 1fr); 
-            gap: 20px; 
-            margin: 20px 0; 
+        .milestones {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
         }
         .milestone {
-            position: relative; 
-            text-align: center;
+            width: 150px;
+            height: 150px;
+            background-color: #d3d3d3; /* Greyed out */
+            margin: 10px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            transition: background-color 0.3s;
+        }
+        .milestone.active {
+            background-color: #28a745; /* Green when active */
         }
         .milestone img {
-            width: 100%; 
-            filter: grayscale(100%); 
-            transition: filter 0.3s; 
+            width: 80%;
+            height: auto;
+            display: none; /* Initially hidden */
         }
         .milestone.active img {
-            filter: none; 
+            display: block; /* Show when active */
         }
         .milestone-title {
-            margin-top: 10px; 
-            font-size: 1.2em; 
-            color: #333; 
+            font-weight: bold;
+            margin-top: 10px;
         }
         .percentage {
-            font-size: 1em; 
-            color: #666; 
+            position: absolute;
+            bottom: 10px;
+            font-size: 0.8em;
         }
         #backButton {
-            margin-top: 20px; 
-            padding: 10px 20px; 
-            background-color: #007BFF; 
-            color: white; 
-            border: none; 
-            border-radius: 5px; 
-            cursor: pointer; 
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
         }
         #backButton:hover {
-            background-color: #0056b3; 
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -114,41 +128,42 @@
         <a href="milestones.html">Milestones</a>
     </div>
 
-    <h1>Milestones</h1>
-    <div class="milestone-grid">
-        <div id="milestone1" class="milestone">
-            <img src="https://via.placeholder.com/150" alt="1 Month Sober">
+    <h1>Sober Milestones</h1>
+
+    <div class="milestones">
+        <div class="milestone" id="milestone1">
+            <img src="1month.png" alt="1 Month Sober">
             <div class="milestone-title">1 Month Sober</div>
-            <div class="percentage">0%</div>
+            <div class="percentage" id="percentage1">0%</div>
         </div>
-        <div id="milestone2" class="milestone">
-            <img src="https://via.placeholder.com/150" alt="6 Months Sober">
+        <div class="milestone" id="milestone2">
+            <img src="6months.png" alt="6 Months Sober">
             <div class="milestone-title">6 Months Sober</div>
-            <div class="percentage">0%</div>
+            <div class="percentage" id="percentage2">0%</div>
         </div>
-        <div id="milestone3" class="milestone">
-            <img src="https://via.placeholder.com/150" alt="1 Year Sober">
+        <div class="milestone" id="milestone3">
+            <img src="1year.png" alt="1 Year Sober">
             <div class="milestone-title">1 Year Sober</div>
-            <div class="percentage">0%</div>
+            <div class="percentage" id="percentage3">0%</div>
         </div>
-        <div id="milestone4" class="milestone">
-            <img src="https://via.placeholder.com/150" alt="2 Years Sober">
+        <div class="milestone" id="milestone4">
+            <img src="2years.png" alt="2 Years Sober">
             <div class="milestone-title">2 Years Sober</div>
-            <div class="percentage">0%</div>
+            <div class="percentage" id="percentage4">0%</div>
         </div>
-        <div id="milestone5" class="milestone">
-            <img src="https://via.placeholder.com/150" alt="5 Years Sober">
+        <div class="milestone" id="milestone5">
+            <img src="5years.png" alt="5 Years Sober">
             <div class="milestone-title">5 Years Sober</div>
-            <div class="percentage">0%</div>
+            <div class="percentage" id="percentage5">0%</div>
         </div>
-        <div id="milestone6" class="milestone">
-            <img src="https://via.placeholder.com/150" alt="10 Years Sober">
+        <div class="milestone" id="milestone6">
+            <img src="10years.png" alt="10 Years Sober">
             <div class="milestone-title">10 Years Sober</div>
-            <div class="percentage">0%</div>
+            <div class="percentage" id="percentage6">0%</div>
         </div>
     </div>
 
-    <button id="backButton" onclick="window.location.href='index.html'">Back to Home</button>
+    <button id="backButton" onclick="goBack()">Go Back</button>
 
     <script>
         window.onload = function() {
@@ -168,22 +183,25 @@
 
         function updateMilestones(daysSober) {
             const milestones = [
-                { id: "milestone1", title: "1 Month Sober", days: 30 },
-                { id: "milestone2", title: "6 Months Sober", days: 180 },
-                { id: "milestone3", title: "1 Year Sober", days: 365 },
-                { id: "milestone4", title: "2 Years Sober", days: 730 },
-                { id: "milestone5", title: "5 Years Sober", days: 1825 },
-                { id: "milestone6", title: "10 Years Sober", days: 3650 }
+                { id: 'milestone1', goal: 30, percentageId: 'percentage1' },
+                { id: 'milestone2', goal: 180, percentageId: 'percentage2' },
+                { id: 'milestone3', goal: 365, percentageId: 'percentage3' },
+                { id: 'milestone4', goal: 730, percentageId: 'percentage4' },
+                { id: 'milestone5', goal: 1825, percentageId: 'percentage5' },
+                { id: 'milestone6', goal: 3650, percentageId: 'percentage6' }
             ];
 
             milestones.forEach(milestone => {
-                const element = document.getElementById(milestone.id);
-                if (daysSober >= milestone.days) {
-                    element.classList.add("active");
-                    element.querySelector('.percentage').textContent = "100%";
+                const milestoneElement = document.getElementById(milestone.id);
+                const percentageElement = document.getElementById(milestone.percentageId);
+                
+                if (daysSober >= milestone.goal) {
+                    milestoneElement.classList.add('active');
+                    percentageElement.textContent = "100%";
+                    milestoneElement.querySelector('img').style.display = "block"; // Show the image
                 } else {
-                    const percentage = Math.floor((daysSober / milestone.days) * 100);
-                    element.querySelector('.percentage').textContent = percentage + "%";
+                    const percentage = Math.floor((daysSober / milestone.goal) * 100);
+                    percentageElement.textContent = percentage + "%";
                 }
             });
         }
@@ -191,6 +209,10 @@
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
+        }
+
+        function goBack() {
+            window.location.href = "index.html";
         }
     </script>
 </body>
