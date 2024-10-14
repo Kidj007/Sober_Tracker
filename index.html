@@ -10,6 +10,10 @@
             margin: 20px;
             text-align: center;
             position: relative; /* For positioning the button */
+            min-height: 100vh; /* Ensures body is at least full height */
+            display: flex; /* Flexbox for vertical centering */
+            flex-direction: column; /* Stack items vertically */
+            justify-content: space-between; /* Space items evenly */
         }
         h1 {
             color: #4CAF50;
@@ -48,16 +52,23 @@
             position: absolute; /* Positioning the update button */
             bottom: 20px; /* Distance from bottom */
             right: 20px; /* Distance from right */
+            display: none; /* Initially hidden */
         }
         #quoteSection {
             margin-top: 30px; /* Spacing above the quotes section */
             font-size: 1.5em; /* Font size for quotes */
             color: #333; /* Darker color for contrast */
         }
+        #trackerImage {
+            max-width: 100%; /* Responsive image */
+            height: auto; /* Maintain aspect ratio */
+            margin: 20px 0; /* Spacing above and below the image */
+        }
     </style>
 </head>
 <body>
     <h1>Sober Day Tracker</h1>
+    <img id="trackerImage" src="https://via.placeholder.com/400" alt="Sober Tracker Image"> <!-- Replace with your image URL -->
     <form id="dateForm" style="display: none;">
         <label for="soberDate" style="font-size: 1.5em;">Enter the date you stopped drinking:</label><br><br>
         <input type="date" id="soberDate" name="soberDate" required><br><br>
@@ -66,7 +77,8 @@
 
     <p id="daysSober"></p>
     <div id="quoteSection"></div>
-    <button id="updateButton" style="display: none;">Update Date</button>
+    
+    <button id="updateButton">Update Date</button> <!-- Moved to bottom right -->
 
     <script>
         window.onload = function() {
