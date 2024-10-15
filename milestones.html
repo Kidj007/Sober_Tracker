@@ -66,24 +66,6 @@
         .milestone.visible {
             opacity: 1; /* Reveal the milestone */
         }
-        #updateDateButton {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 6;
-        }
-        #updateDateButton:hover {
-            background-color: #0056b3;
-        }
-        input[type="date"] {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -124,23 +106,10 @@
         </div>
     </div>
 
-    <input type="date" id="dateInput" onchange="updateDate()">
-    <button id="updateDateButton" onclick="document.getElementById('dateInput').click();">Update Date</button>
-
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
-        }
-
-        function updateDate() {
-            const dateInput = document.getElementById('dateInput');
-            const date = dateInput.value;
-            if (date) {
-                localStorage.setItem("soberDate", date);
-                calculateMilestones(date);
-                alert("Sobriety start date updated!");
-            }
         }
 
         function calculateMilestones(soberDate) {
@@ -161,14 +130,13 @@
 
             milestones.forEach(milestone => {
                 const milestoneElement = document.getElementById(milestone.element);
+                const progressPercentage = Math.min(((daysSober / milestone.threshold) * 100).toFixed(0), 100); // Cap at 100%
                 if (daysSober >= milestone.threshold) {
                     milestoneElement.classList.add("visible");
-                    const progressPercentage = ((daysSober / milestone.threshold) * 100).toFixed(0);
-                    document.getElementById(milestone.element + "Progress").textContent = progressPercentage + "%";
                 } else {
                     milestoneElement.classList.remove("visible");
-                    document.getElementById(milestone.element + "Progress").textContent = "0%";
                 }
+                document.getElementById(milestone.element + "Progress").textContent = progressPercentage + "%";
             });
         }
 
@@ -176,7 +144,6 @@
         window.onload = function() {
             const storedDate = localStorage.getItem("soberDate");
             if (storedDate) {
-                document.getElementById('dateInput').value = storedDate; // Set the value in the date input
                 calculateMilestones(storedDate);
             }
         }
