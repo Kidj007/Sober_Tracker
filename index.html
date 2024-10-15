@@ -56,21 +56,6 @@
             font-size: 24px;
             margin: 20px 0;
         }
-        #updateDateButton {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            z-index: 6;
-        }
-        #updateDateButton:hover {
-            background-color: #0056b3;
-        }
         input[type="date"] {
             display: none; /* Hide the date input */
         }
@@ -90,18 +75,11 @@
     <div id="quote"></div>
 
     <input type="date" id="dateInput" onchange="updateDate()">
-    <button id="updateDateButton" onclick="showDatePicker()">Update Date</button>
-
+    
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
-        }
-
-        function showDatePicker() {
-            // Show the date input when the button is clicked
-            const dateInput = document.getElementById('dateInput');
-            dateInput.click(); // Trigger the date input click
         }
 
         function updateDate() {
@@ -140,6 +118,11 @@
             if (storedDate) {
                 document.getElementById('dateInput').value = storedDate; // Set the value in the date input
                 calculateDaysSober(storedDate);
+            } else {
+                // Prompt user to select a date if none is set
+                const dateInput = document.getElementById('dateInput');
+                dateInput.style.display = 'block'; // Show the date input
+                dateInput.focus(); // Focus on the date input
             }
         }
     </script>
