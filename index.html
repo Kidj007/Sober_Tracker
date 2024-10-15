@@ -99,7 +99,9 @@
         }
 
         function showDatePicker() {
-            document.getElementById('dateInput').click(); // Trigger the date input click
+            // Show the date input when the button is clicked
+            const dateInput = document.getElementById('dateInput');
+            dateInput.click(); // Trigger the date input click
         }
 
         function updateDate() {
@@ -108,7 +110,6 @@
             if (date) {
                 localStorage.setItem("soberDate", date);
                 calculateDaysSober(date);
-                alert("Sobriety start date updated!");
             }
         }
 
