@@ -72,8 +72,7 @@
             background-color: #0056b3;
         }
         input[type="date"] {
-            /* Visible for debugging */
-            display: inline-block; 
+            display: none; /* Hide the date input */
         }
     </style>
 </head>
@@ -91,12 +90,16 @@
     <div id="quote"></div>
 
     <input type="date" id="dateInput" onchange="updateDate()">
-    <button id="updateDateButton" onclick="document.getElementById('dateInput').click();">Update Date</button>
+    <button id="updateDateButton" onclick="showDatePicker()">Update Date</button>
 
     <script>
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
+        }
+
+        function showDatePicker() {
+            document.getElementById('dateInput').click(); // Trigger the date input click
         }
 
         function updateDate() {
