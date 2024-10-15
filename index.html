@@ -72,7 +72,8 @@
             background-color: #0056b3;
         }
         input[type="date"] {
-            display: none; /* Hide the default date input */
+            /* Visible for debugging */
+            display: inline-block; 
         }
     </style>
 </head>
@@ -114,7 +115,6 @@
             const diffTime = today - dateEntered;
             const daysSober = Math.floor(diffTime / (1000 * 60 * 60 * 24));
             document.getElementById('daysCounter').textContent = daysSober;
-            return daysSober; // Return days sober for future use
         }
 
         function displayRandomQuote() {
