@@ -11,216 +11,165 @@
             padding: 0;
             background-color: #f4f4f4;
             text-align: center;
-            height: 100vh;
             display: flex;
             flex-direction: column;
+            height: 100vh;
         }
 
-        /* Title Styling */
-        h1 {
-            font-size: 36px;
+        /* Header Section */
+        .header {
+            background-color: #7C4DFF; /* Example color */
+            color: white;
+            padding: 20px;
+            position: relative;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin: 0;
+        }
+
+        .header p {
+            font-size: 14px;
+            margin: 5px 0;
+        }
+
+        .header .challenge {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        /* Recovery Duration Section */
+        .recovery-duration {
+            display: flex;
+            justify-content: center;
+            align-items: center;
             margin: 20px 0;
         }
 
-        /* Card for displaying sober time */
-        .card {
+        .duration-card {
             background-color: white;
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            margin: 0 auto 20px;
-            max-width: 400px;
+            margin: 0 10px;
+            flex: 1;
         }
 
-        #soberTime {
+        .duration-card h2 {
             font-size: 24px;
-            font-weight: bold;
-            color: #4CAF50;
-            margin-bottom: 10px;
+            margin: 0;
         }
 
-        #sobrietyDate {
-            font-size: 14px;
-            color: #666;
-        }
-
-        /* Quote Box Styling */
-        .quote-box {
+        /* Rewards Section */
+        .rewards {
             background-color: white;
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            width: 90%;
-            margin: 0 auto;
-            max-width: 400px;
+            margin: 20px;
         }
 
-        #quote {
-            font-size: 16px;
-            color: #555;
-            font-style: italic;
+        .rewards h2 {
+            font-size: 24px;
         }
 
-        /* Hamburger Menu Styling */
-        .hamburger {
-            font-size: 30px;
-            cursor: pointer;
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 3;
-        }
-
-        /* Sidebar Styles */
-        .sidebar {
-            height: 100%;
-            width: 0;
-            position: fixed;
-            z-index: 2;
-            top: 0;
-            left: 0;
-            background-color: #e0e0e0;
-            overflow-x: hidden;
-            transition: 0.5s;
-            padding-top: 60px;
-        }
-
-        .sidebar a {
-            padding: 8px;
-            text-decoration: none;
-            font-size: 25px;
-            color: #818181;
-            display: block;
-            transition: 0.3s;
-            text-align: center;
-        }
-
-        .sidebar a:hover {
-            color: #f1f1f1;
-        }
-
-        .sidebar .closebtn {
-            position: absolute;
-            top: 0;
-            right: 25px;
+        .rewards .amount {
             font-size: 36px;
-            margin-left: 50px;
+            color: #4CAF50;
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            display: flex;
+            justify-content: space-around;
+            background-color: #7C4DFF;
+            padding: 10px 0;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+        }
+
+        /* Milestones Section */
+        .milestones {
+            margin: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .milestones h2 {
+            font-size: 24px;
+        }
+
+        .milestones button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .milestones button:hover {
+            background-color: #45a049;
         }
     </style>
 </head>
 <body>
 
-    <!-- Hamburger Menu Icon -->
-    <span class="hamburger" onclick="openNav()">&#9776;</span>
-
-    <!-- Title -->
-    <h1>Sober Day Tracker</h1>
-
-    <!-- Card Container for Sobriety Time -->
-    <div class="card">
-        <div id="soberTime"></div>
-        <div id="sobrietyDate"></div>
+    <!-- Header Section -->
+    <div class="header">
+        <h1>Chris Scott</h1>
+        <p>Joined: 5/5/2020</p>
+        <p class="challenge">Current challenge: 🏆</p>
     </div>
 
-    <!-- Quote Box -->
-    <div class="quote-box">
-        <div id="quote"></div>
+    <!-- Recovery Duration Section -->
+    <div class="recovery-duration">
+        <div class="duration-card">
+            <h2 id="years">0 Years</h2>
+        </div>
+        <div class="duration-card">
+            <h2 id="months">2 Months</h2>
+        </div>
+        <div class="duration-card">
+            <h2 id="days">23 Days</h2>
+        </div>
     </div>
 
-    <!-- Sidebar Menu -->
-    <div id="sidebar" class="sidebar">
-        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <a href="index.html">Home</a>
-        <a href="milestones.html">Milestones</a>
-        <a href="javascript:void(0)" onclick="promptNewDate()">Update Sober Date</a>
+    <!-- Rewards Section -->
+    <div class="rewards">
+        <h2>Rewards Earned</h2>
+        <div class="amount" id="rewardAmount">$200 Earned so far</div>
+    </div>
+
+    <!-- Milestones Section -->
+    <div class="milestones">
+        <h2>Next Milestone</h2>
+        <button onclick="checkIn()">Earn milestones by checking in!</button>
+    </div>
+
+    <!-- Navigation Bar -->
+    <div class="nav-bar">
+        <a href="#">My Day</a>
+        <a href="#">Online</a>
+        <a href="#">Messages</a>
     </div>
 
     <script>
-        // Check if the sobriety start date is already stored
-        window.onload = function() {
-            const storedDate = localStorage.getItem('sobrietyStartDate');
-            if (storedDate) {
-                calculateSoberTime(new Date(storedDate));
-                showRandomQuote();
-            } else {
-                document.getElementById('soberTime').innerText = "Please enter a valid date.";
-            }
-        };
-
-        // Function to calculate and display the sober time in years, months, and days
-        function calculateSoberTime(sobrietyStartDate) {
-            const today = new Date();
-            let years = today.getFullYear() - sobrietyStartDate.getFullYear();
-            let months = today.getMonth() - sobrietyStartDate.getMonth();
-            let days = today.getDate() - sobrietyStartDate.getDate();
-
-            // Adjust if days or months are negative
-            if (days < 0) {
-                months -= 1;
-                const daysInLastMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
-                days += daysInLastMonth;
-            }
-
-            if (months < 0) {
-                years -= 1;
-                months += 12;
-            }
-
-            let soberText = '';
-
-            if (years > 0) {
-                soberText += years + " Year" + (years > 1 ? "s " : " ");
-            }
-
-            if (months > 0 || years > 0) {
-                soberText += months + " Month" + (months > 1 ? "s " : " ");
-            }
-
-            soberText += days + " Day" + (days > 1 ? "s " : "");
-
-            document.getElementById('soberTime').innerText = soberText;
-
-            // Display the sobriety start date below the time
-            document.getElementById('sobrietyDate').innerText = "Sobriety Date: " + sobrietyStartDate.toDateString();
-        }
-
-        // Function to show a random quote
-        function showRandomQuote() {
-            const quotes = [
-                "“The journey of a thousand miles begins with one step.” — Lao Tzu",
-                "“Every accomplishment starts with the decision to try.” — John F. Kennedy",
-                "“What lies behind us and what lies before us are tiny matters compared to what lies within us.” — Ralph Waldo Emerson",
-                "“Your life is your story, and the adventure ahead of you is the journey to fulfill your own purpose and potential.” — Kerry Washington",
-                "“It does not matter how slowly you go as long as you do not stop.” — Confucius"
-            ];
-            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
-            document.getElementById('quote').innerText = randomQuote;
-        }
-
-        // Function to open the sidebar
-        function openNav() {
-            document.getElementById("sidebar").style.width = "180px";
-        }
-
-        // Function to close the sidebar
-        function closeNav() {
-            document.getElementById("sidebar").style.width = "0";
-        }
-
-        // Function to prompt user for a new sober date
-        function promptNewDate() {
-            const newDate = prompt("Please enter your new sober start date (YYYY-MM-DD):");
-            if (newDate) {
-                const newSoberDate = new Date(newDate);
-                if (!isNaN(newSoberDate)) {
-                    localStorage.setItem('sobrietyStartDate', newSoberDate);
-                    calculateSoberTime(newSoberDate);
-                    alert("Sober date updated!");
-                } else {
-                    alert("Invalid date format. Please try again.");
-                }
-            }
+        // You can insert existing JavaScript functions here for calculating sober time and showing quotes
+        function checkIn() {
+            alert("You have checked in for today!");
+            // Additional functionality for checking in can be added here
         }
     </script>
 
