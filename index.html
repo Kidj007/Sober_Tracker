@@ -72,6 +72,13 @@
             background-color: #45a049;
         }
 
+        /* Main Title */
+        .main-title {
+            font-size: 32px;
+            margin: 20px 0;
+            color: #333;
+        }
+
         /* Recovery Duration Section */
         .recovery-duration {
             display: flex;
@@ -171,8 +178,9 @@
 
     <!-- Header Section -->
     <div class="header" id="header" style="display: none;">
-        <h1 id="userName">Welcome!</h1>
-        <p id="sobrietyDate">Joined: N/A</p>
+        <h1 class="main-title">Sobriety Tracker</h1>
+        <h2 id="userName">Welcome!</h2>
+        <p id="sobrietyDate">Start Date: N/A</p>
         <p class="challenge" id="currentMilestone">Current Milestone: N/A</p>
         <p id="nextMilestone">Next Milestone: N/A</p>
     </div>
@@ -233,8 +241,8 @@
             document.getElementById('milestones').style.display = 'block';
             document.getElementById('navBar').style.display = 'flex';
 
-            document.getElementById('userName').innerText = name;
-            document.getElementById('sobrietyDate').innerText = "Joined: " + sobrietyStartDate.toDateString();
+            document.getElementById('userName').innerText = "Welcome " + name + "!";
+            document.getElementById('sobrietyDate').innerText = "Start Date: " + sobrietyStartDate.toDateString();
 
             calculateSoberTime(sobrietyStartDate);
         }
