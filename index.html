@@ -31,7 +31,6 @@
             width: 90%;
             margin: 0 auto 20px;
             max-width: 400px;
-            padding: 20px 20px; /* Ensure box doesn't touch mobile edges */
         }
 
         #soberTime {
@@ -55,7 +54,6 @@
             width: 90%;
             margin: 0 auto;
             max-width: 400px;
-            padding: 20px 20px; /* Ensure box doesn't touch mobile edges */
         }
 
         #quote {
@@ -71,7 +69,7 @@
             position: fixed;
             top: 10px;
             left: 10px;
-            z-index: 3; /* Higher z-index to ensure it's above the sidebar */
+            z-index: 3;
         }
 
         /* Sidebar Styles */
@@ -82,7 +80,7 @@
             z-index: 2;
             top: 0;
             left: 0;
-            background-color: #e0e0e0; /* Light Grey */
+            background-color: #e0e0e0;
             overflow-x: hidden;
             transition: 0.5s;
             padding-top: 60px;
@@ -95,7 +93,7 @@
             color: #818181;
             display: block;
             transition: 0.3s;
-            text-align: center; /* Center the links */
+            text-align: center;
         }
 
         .sidebar a:hover {
@@ -109,7 +107,6 @@
             font-size: 36px;
             margin-left: 50px;
         }
-
     </style>
 </head>
 <body>
@@ -136,7 +133,7 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="index.html">Home</a>
         <a href="milestones.html">Milestones</a>
-        <a href="javascript:void(0)" onclick="promptNewDate()">Update Sober Date</a> <!-- New Update Date Button -->
+        <a href="javascript:void(0)" onclick="promptNewDate()">Update Sober Date</a>
     </div>
 
     <script>
@@ -147,8 +144,7 @@
                 calculateSoberTime(new Date(storedDate));
                 showRandomQuote();
             } else {
-                const soberTimeDiv = document.getElementById('soberTime');
-                soberTimeDiv.innerText = "Please enter a valid date.";
+                document.getElementById('soberTime').innerText = "Please enter a valid date.";
             }
         };
 
