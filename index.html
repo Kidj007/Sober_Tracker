@@ -6,64 +6,84 @@
     <title>Sober Day Tracker</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
-            text-align: center;
             background-color: #f4f4f4;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         h1 {
-            margin-top: 20px;
+            font-size: 22px;
+            margin: 20px 0;
+        }
+
+        /* Centered container card */
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            margin: 0 auto;
+            max-width: 400px;
         }
 
         #daysSober {
-            font-size: 24px;
-            margin-top: 20px;
+            font-size: 30px;
+            font-weight: bold;
+            color: #4CAF50;
         }
 
         #quote {
-            margin-top: 20px;
+            margin-top: 15px;
+            font-size: 16px;
+            color: #555;
             font-style: italic;
         }
 
-        #updateDateButton {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-
-        #enterDate {
-            margin-top: 50px;
-        }
-
         #enterDate p {
-            font-size: 20px;
+            font-size: 18px;
+            margin-bottom: 10px;
         }
 
-        #enterDate input {
-            padding: 10px;
+        #enterDate input, #enterDate button {
             font-size: 16px;
+            padding: 10px;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
         }
 
         #enterDate button {
-            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
             cursor: pointer;
+            border: none;
         }
 
-        /* Hamburger Menu Styles */
+        /* Fixed Bottom Navigation Bar */
+        .nav-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #4CAF50;
+            display: flex;
+            justify-content: space-around;
+            padding: 10px 0;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+        }
+
+        /* Hamburger Menu */
         .hamburger {
             font-size: 30px;
             cursor: pointer;
@@ -73,7 +93,7 @@
             z-index: 2;
         }
 
-        /* Updated Sidebar Styles */
+        /* Sidebar Styles */
         .sidebar {
             height: 100%;
             width: 0;
@@ -85,7 +105,6 @@
             overflow-x: hidden;
             transition: 0.5s;
             padding-top: 60px;
-            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
         }
 
         .sidebar a {
@@ -110,40 +129,32 @@
             margin-left: 50px;
         }
 
-        /* Reduce Sidebar Width by 25% */
-        #mainContent {
-            padding: 16px;
-        }
-
-        @media screen and (max-height: 450px) {
-            .sidebar { padding-top: 15px; }
-            .sidebar a { font-size: 18px; }
-        }
     </style>
 </head>
 <body>
 
-    <div id="mainContent">
-        <!-- Hamburger Menu Icon -->
-        <span class="hamburger" onclick="openNav()">&#9776;</span>
+    <!-- Hamburger Menu Icon -->
+    <span class="hamburger" onclick="openNav()">&#9776;</span>
 
-        <h1>Sober Day Tracker</h1>
+    <!-- Title -->
+    <h1>Sober Day Tracker</h1>
 
-        <!-- Enter Date Section -->
-        <div id="enterDate">
-            <p>Enter your start date:</p>
-            <input type="date" id="dateInput">
-            <button onclick="saveDate()">Submit</button>
-        </div>
+    <!-- Card Container -->
+    <div class="card" id="enterDate">
+        <p>Enter your start date:</p>
+        <input type="date" id="dateInput">
+        <button onclick="saveDate()">Submit</button>
+    </div>
 
-        <!-- Days Sober Counter -->
-        <div id="daysSober" style="display: none;"></div>
+    <div class="card" style="display: none;" id="soberTracker">
+        <div id="daysSober"></div>
+        <div id="quote"></div>
+    </div>
 
-        <!-- Random Quote -->
-        <div id="quote" style="display: none;"></div>
-
-        <!-- Update Date Button -->
-        <button id="updateDateButton" style="display: none;" onclick="showDateInput()">Update Date</button>
+    <!-- Bottom Navigation Bar -->
+    <div class="nav-bar">
+        <a href="index.html">Home</a>
+        <a href="milestones.html">Milestones</a>
     </div>
 
     <!-- Sidebar Menu -->
@@ -160,9 +171,7 @@
             if (storedDate) {
                 calculateDaysSober(new Date(storedDate));
                 document.getElementById('enterDate').style.display = 'none';
-                document.getElementById('daysSober').style.display = 'block';
-                document.getElementById('quote').style.display = 'block';
-                document.getElementById('updateDateButton').style.display = 'block';
+                document.getElementById('soberTracker').style.display = 'block';
                 showRandomQuote();
             }
         };
@@ -175,9 +184,7 @@
                 localStorage.setItem('sobrietyStartDate', sobrietyStartDate);
                 calculateDaysSober(sobrietyStartDate);
                 document.getElementById('enterDate').style.display = 'none';
-                document.getElementById('daysSober').style.display = 'block';
-                document.getElementById('quote').style.display = 'block';
-                document.getElementById('updateDateButton').style.display = 'block';
+                document.getElementById('soberTracker').style.display = 'block';
                 showRandomQuote();
             } else {
                 alert("Please select a valid date.");
@@ -190,14 +197,6 @@
             const timeDiff = today.getTime() - sobrietyStartDate.getTime();
             const daysSober = Math.floor(timeDiff / (1000 * 3600 * 24));
             document.getElementById('daysSober').innerText = daysSober + " days sober!";
-        }
-
-        // Function to show the date input again for updating the date
-        function showDateInput() {
-            document.getElementById('enterDate').style.display = 'block';
-            document.getElementById('daysSober').style.display = 'none';
-            document.getElementById('quote').style.display = 'none';
-            document.getElementById('updateDateButton').style.display = 'none';
         }
 
         // Function to show a random quote
@@ -215,7 +214,7 @@
 
         // Sidebar Functions
         function openNav() {
-            document.getElementById("sidebar").style.width = "180px"; /* Reduce width by 25% */
+            document.getElementById("sidebar").style.width = "180px";
         }
 
         function closeNav() {
