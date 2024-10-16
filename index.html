@@ -14,6 +14,7 @@
             display: flex;
             flex-direction: column;
             height: 100vh;
+            overflow: auto; /* Allow scrolling */
         }
 
         /* Landing Page */
@@ -119,15 +120,16 @@
             color: #4CAF50;
         }
 
-        /* Navigation Bar */
+        /* Fixed Navigation Bar */
         .nav-bar {
             display: flex;
             justify-content: space-around;
             background-color: #7C4DFF;
             padding: 10px 0;
-            position: absolute;
-            bottom: 0;
+            position: fixed; /* Fixed position */
+            bottom: 0; /* Stick to the bottom */
             width: 100%;
+            box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.2); /* Add shadow for better visibility */
         }
 
         .nav-bar a {
@@ -210,11 +212,11 @@
         <button onclick="checkIn()">Earn milestones by checking in!</button>
     </div>
 
-    <!-- Navigation Bar -->
+    <!-- Fixed Navigation Bar -->
     <div class="nav-bar" id="navBar" style="display: none;">
+        <a href="#" onclick="showUpdateForm()">Update Information</a>
         <a href="#">My Day</a>
         <a href="#">Online</a>
-        <a href="#">Messages</a>
     </div>
 
     <script>
@@ -245,6 +247,23 @@
             document.getElementById('sobrietyDate').innerText = "Start Date: " + sobrietyStartDate.toDateString();
 
             calculateSoberTime(sobrietyStartDate);
+        }
+
+        // Function to show the update form
+        function showUpdateForm() {
+            const storedName = localStorage.getItem('userName');
+            const storedDate = localStorage.getItem('sobrietyStartDate');
+
+            if (storedName && storedDate) {
+                document.getElementById('userNameInput').value = storedName;
+                document.getElementById('sobrietyDateInput').value = storedDate;
+                document.getElementById('landingPage').style.display = 'flex'; // Show input form
+                document.getElementById('header').style.display = 'none';
+                document.getElementById('recoveryDuration').style.display = 'none';
+                document.getElementById('rewards').style.display = 'none';
+                document.getElementById('milestones').style.display = 'none';
+                document.getElementById('navBar').style.display = 'none';
+            }
         }
 
         // Check if the user has already set their name and sobriety date
