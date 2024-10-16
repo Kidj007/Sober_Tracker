@@ -139,13 +139,38 @@
             font-size: 16px;
         }
 
-        /* Donut Chart Container */
+        /* Bar Chart Container */
         .chart-container {
             position: relative;
             margin: 20px;
-            height: 150px; /* Adjust height for visibility */
-            width: 150px; /* Adjust width for visibility */
+            height: 50px; /* Adjust height for visibility */
+            width: 90%; /* Adjust width for visibility */
             margin: auto; /* Center the chart */
+        }
+
+        /* Progress Bar Styles */
+        .progress-bar {
+            background-color: #E0E0E0; /* Grey for remaining */
+            height: 100%; /* Full height */
+            border-radius: 25px; /* Rounded corners */
+            position: relative; /* Position relative for text */
+        }
+
+        .progress {
+            background-color: #4CAF50; /* Green for progress */
+            height: 100%; /* Full height */
+            border-radius: 25px; /* Rounded corners */
+            width: 0; /* Start at 0% */
+        }
+
+        /* Milestone Text */
+        .milestone-text {
+            position: absolute;
+            top: 0;
+            font-size: 14px;
+            color: #333;
+            width: 100%;
+            text-align: center; /* Center the text */
         }
     </style>
 </head>
@@ -187,10 +212,13 @@
     <div class="milestones" id="milestones" style="display: none;">
         <h2>Progress Towards Next Milestone</h2>
         <div class="chart-container">
-            <canvas id="donutChart"></canvas>
+            <div class="progress-bar">
+                <div class="progress" id="progressBar"></div>
+                <div class="milestone-text" id="milestoneText"></div>
+            </div>
         </div>
         <p id="progressText">0% towards your next milestone</p>
-        <button onclick="checkIn()">Earn milestones by checking in!</button>
+        <p id="nextMilestoneDate"></p>
     </div>
 
     <!-- Fixed Navigation Bar -->
@@ -326,35 +354,20 @@
             // Calculate progress towards next milestone
             const progressPercent = Math.min((totalDays / nextMilestoneDays) * 100, 100); // Cap at 100%
             document.getElementById('progressText').innerText = Math.round(progressPercent) + "% towards your next milestone";
-            updateDonutChart(progressPercent);
+
+            // Calculate the expected date for the next milestone
+            const nextMilestoneDate = new Date(sobrietyStartDate);
+            nextMilestoneDate.setDate(nextMilestoneDate.getDate() + nextMilestoneDays);
+            document.getElementById('nextMilestoneDate').innerText = "You will hit your next milestone on " + nextMilestoneDate.toLocaleDateString();
+
+            // Update progress bar
+            updateProgressBar(progressPercent);
         }
 
-        // Function to update donut chart
-        function updateDonutChart(progress) {
-            const ctx = document.getElementById('donutChart').getContext('2d');
-            const data = {
-                datasets: [{
-                    data: [progress, 100 - progress],
-                    backgroundColor: ['#4CAF50', '#E0E0E0'], // Green for progress, grey for remaining
-                    borderWidth: 0,
-                }],
-                labels: ['Progress', 'Remaining']
-            };
-            const options = {
-                circumference: Math.PI, // Half-circle
-                rotation: Math.PI, // Start from the top
-                cutout: '70%', // Hole in the middle for donut effect
-                plugins: {
-                    tooltip: {
-                        enabled: false // Disable tooltips
-                    }
-                }
-            };
-            new Chart(ctx, {
-                type: 'doughnut',
-                data: data,
-                options: options
-            });
+        // Function to update progress bar
+        function updateProgressBar(progress) {
+            const progressBar = document.getElementById('progressBar');
+            progressBar.style.width = progress + "%"; // Set width based on progress
         }
 
         // Function for checking in
