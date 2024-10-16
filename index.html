@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sober Day Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> <!-- Include Chart.js -->
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -107,22 +108,17 @@
             margin: 0;
         }
 
-        /* Rewards Section */
-        .rewards {
+        /* Milestones Section */
+        .milestones {
+            margin: 20px;
             background-color: white;
             padding: 20px;
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            margin: 20px;
         }
 
-        .rewards h2 {
+        .milestones h2 {
             font-size: 24px;
-        }
-
-        .rewards .amount {
-            font-size: 36px;
-            color: #4CAF50;
         }
 
         /* Fixed Navigation Bar */
@@ -143,31 +139,13 @@
             font-size: 16px;
         }
 
-        /* Milestones Section */
-        .milestones {
+        /* Donut Chart Container */
+        .chart-container {
+            position: relative;
             margin: 20px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        }
-
-        .milestones h2 {
-            font-size: 24px;
-        }
-
-        .milestones button {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .milestones button:hover {
-            background-color: #45a049;
+            height: 150px; /* Adjust height for visibility */
+            width: 150px; /* Adjust width for visibility */
+            margin: auto; /* Center the chart */
         }
     </style>
 </head>
@@ -205,23 +183,20 @@
         </div>
     </div>
 
-    <!-- Rewards Section -->
-    <div class="rewards" id="rewards" style="display: none;">
-        <h2>Rewards Earned</h2>
-        <div class="amount" id="rewardAmount">$200 Earned so far</div>
-    </div>
-
     <!-- Milestones Section -->
     <div class="milestones" id="milestones" style="display: none;">
-        <h2>Next Milestone</h2>
+        <h2>Progress Towards Next Milestone</h2>
+        <div class="chart-container">
+            <canvas id="donutChart"></canvas>
+        </div>
+        <p id="progressText">0% towards your next milestone</p>
         <button onclick="checkIn()">Earn milestones by checking in!</button>
     </div>
 
     <!-- Fixed Navigation Bar -->
     <div class="nav-bar" id="navBar" style="display: none;">
         <a href="#" onclick="showUpdateForm()">Update Information</a>
-        <a href="#">My Day</a>
-        <a href="#">Online</a>
+        <a href="#">Help & Support</a>
     </div>
 
     <script>
@@ -244,7 +219,6 @@
             document.getElementById('landingPage').style.display = 'none';
             document.getElementById('header').style.display = 'block';
             document.getElementById('recoveryDuration').style.display = 'flex';
-            document.getElementById('rewards').style.display = 'block';
             document.getElementById('milestones').style.display = 'block';
             document.getElementById('navBar').style.display = 'flex';
 
@@ -265,7 +239,6 @@
                 document.getElementById('landingPage').style.display = 'flex'; // Show input form
                 document.getElementById('header').style.display = 'none';
                 document.getElementById('recoveryDuration').style.display = 'none';
-                document.getElementById('rewards').style.display = 'none';
                 document.getElementById('milestones').style.display = 'none';
                 document.getElementById('navBar').style.display = 'none';
             }
@@ -309,40 +282,79 @@
             updateMilestones(years, months, days);
         }
 
-        // Function to update milestones
+        // Function to update milestones and progress
         function updateMilestones(years, months, days) {
             const totalDays = years * 365 + months * 30 + days; // Approximation for days
             let currentMilestone;
             let nextMilestone;
+            let nextMilestoneDays;
 
-            if (totalDays >= 365 * 10) {
-                currentMilestone = "10 Years";
-                nextMilestone = "10+ Years";
-            } else if (totalDays >= 365 * 5) {
-                currentMilestone = "5 Years";
-                nextMilestone = "10 Years";
-            } else if (totalDays >= 365 * 2) {
-                currentMilestone = "2 Years";
-                nextMilestone = "5 Years";
-            } else if (totalDays >= 365) {
-                currentMilestone = "1 Year";
-                nextMilestone = "2 Years";
-            } else if (totalDays >= 183) {
-                currentMilestone = "6 Months";
-                nextMilestone = "1 Year";
-            } else if (totalDays >= 30) {
-                currentMilestone = "1 Month";
-                nextMilestone = "6 Months";
-            } else if (totalDays >= 7) {
-                currentMilestone = "1 Week";
-                nextMilestone = "1 Month";
-            } else {
+            // Define milestone days
+            if (totalDays < 1) {
                 currentMilestone = "1 Day";
                 nextMilestone = "1 Week";
+                nextMilestoneDays = 7;
+            } else if (totalDays < 7) {
+                currentMilestone = "1 Week";
+                nextMilestone = "1 Month";
+                nextMilestoneDays = 30;
+            } else if (totalDays < 30) {
+                currentMilestone = "1 Month";
+                nextMilestone = "6 Months";
+                nextMilestoneDays = 183;
+            } else if (totalDays < 183) {
+                currentMilestone = "6 Months";
+                nextMilestone = "1 Year";
+                nextMilestoneDays = 365;
+            } else if (totalDays < 365) {
+                currentMilestone = "1 Year";
+                nextMilestone = "2 Years";
+                nextMilestoneDays = 730;
+            } else if (totalDays < 730) {
+                currentMilestone = "2 Years";
+                nextMilestone = "5 Years";
+                nextMilestoneDays = 1825;
+            } else {
+                currentMilestone = "5 Years";
+                nextMilestone = "10 Years";
+                nextMilestoneDays = 3650;
             }
 
             document.getElementById('currentMilestone').innerText = "Current Milestone: " + currentMilestone;
             document.getElementById('nextMilestone').innerText = "Next Milestone: " + nextMilestone;
+
+            // Calculate progress towards next milestone
+            const progressPercent = Math.min((totalDays / nextMilestoneDays) * 100, 100); // Cap at 100%
+            document.getElementById('progressText').innerText = Math.round(progressPercent) + "% towards your next milestone";
+            updateDonutChart(progressPercent);
+        }
+
+        // Function to update donut chart
+        function updateDonutChart(progress) {
+            const ctx = document.getElementById('donutChart').getContext('2d');
+            const data = {
+                datasets: [{
+                    data: [progress, 100 - progress],
+                    backgroundColor: ['#4CAF50', '#E0E0E0'], // Green for progress, grey for remaining
+                    borderWidth: 0,
+                }],
+                labels: ['Progress', 'Remaining']
+            };
+            const options = {
+                circumference: Math.PI, // Half-circle
+                rotation: Math.PI, // Start from the top
+                cutout: '70%', // Hole in the middle for donut effect
+                plugins: {
+                    tooltip: {
+                        enabled: false // Disable tooltips
+                    }
+                }
+            };
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: data,
+                options: options
+            });
         }
 
         // Function for checking in
