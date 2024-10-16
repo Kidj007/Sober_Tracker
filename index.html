@@ -16,13 +16,37 @@
             flex-direction: column;
         }
 
+        /* Title Styling */
         h1 {
-            font-size: 22px;
+            font-size: 36px;
             margin: 20px 0;
         }
 
-        /* Centered container card */
+        /* Card for displaying sober time */
         .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            margin: 0 auto 20px;
+            max-width: 400px;
+        }
+
+        #soberTime {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        #sobrietyDate {
+            font-size: 14px;
+            color: #666;
+        }
+
+        /* Quote Box Styling */
+        .quote-box {
             background-color: white;
             padding: 20px;
             border-radius: 15px;
@@ -32,65 +56,21 @@
             max-width: 400px;
         }
 
-        #daysSober {
-            font-size: 30px;
-            font-weight: bold;
-            color: #4CAF50;
-        }
-
         #quote {
-            margin-top: 15px;
             font-size: 16px;
             color: #555;
             font-style: italic;
         }
 
-        #enterDate p {
-            font-size: 18px;
-            margin-bottom: 10px;
-        }
-
-        #enterDate input, #enterDate button {
-            font-size: 16px;
-            padding: 10px;
-            border-radius: 10px;
-            border: 1px solid #ccc;
-            margin-bottom: 10px;
-        }
-
-        #enterDate button {
-            background-color: #4CAF50;
-            color: white;
-            cursor: pointer;
-            border: none;
-        }
-
-        /* Fixed Bottom Navigation Bar */
-        .nav-bar {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: #4CAF50;
-            display: flex;
-            justify-content: space-around;
-            padding: 10px 0;
-        }
-
-        .nav-bar a {
-            color: white;
-            text-decoration: none;
-            font-size: 18px;
-        }
-
-        /* Hamburger Menu */
+        /* Remove Bottom Navigation */
+        /* Hamburger Menu Styling */
         .hamburger {
             font-size: 30px;
             cursor: pointer;
             position: fixed;
             top: 10px;
             left: 10px;
-            z-index: 2;
+            z-index: 3; /* Higher z-index to ensure it's above the sidebar */
         }
 
         /* Sidebar Styles */
@@ -139,22 +119,15 @@
     <!-- Title -->
     <h1>Sober Day Tracker</h1>
 
-    <!-- Card Container -->
-    <div class="card" id="enterDate">
-        <p>Enter your start date:</p>
-        <input type="date" id="dateInput">
-        <button onclick="saveDate()">Submit</button>
+    <!-- Card Container for Sobriety Time -->
+    <div class="card">
+        <div id="soberTime"></div>
+        <div id="sobrietyDate"></div>
     </div>
 
-    <div class="card" style="display: none;" id="soberTracker">
-        <div id="daysSober"></div>
+    <!-- Quote Box -->
+    <div class="quote-box">
         <div id="quote"></div>
-    </div>
-
-    <!-- Bottom Navigation Bar -->
-    <div class="nav-bar">
-        <a href="index.html">Home</a>
-        <a href="milestones.html">Milestones</a>
     </div>
 
     <!-- Sidebar Menu -->
@@ -169,34 +142,40 @@
         window.onload = function() {
             const storedDate = localStorage.getItem('sobrietyStartDate');
             if (storedDate) {
-                calculateDaysSober(new Date(storedDate));
-                document.getElementById('enterDate').style.display = 'none';
-                document.getElementById('soberTracker').style.display = 'block';
+                calculateSoberTime(new Date(storedDate));
                 showRandomQuote();
+            } else {
+                const soberTimeDiv = document.getElementById('soberTime');
+                soberTimeDiv.innerText = "Please enter a valid date.";
             }
         };
 
-        // Function to save the entered date
-        function saveDate() {
-            const dateInput = document.getElementById('dateInput').value;
-            if (dateInput) {
-                const sobrietyStartDate = new Date(dateInput);
-                localStorage.setItem('sobrietyStartDate', sobrietyStartDate);
-                calculateDaysSober(sobrietyStartDate);
-                document.getElementById('enterDate').style.display = 'none';
-                document.getElementById('soberTracker').style.display = 'block';
-                showRandomQuote();
-            } else {
-                alert("Please select a valid date.");
-            }
-        }
-
-        // Function to calculate and display the number of days sober
-        function calculateDaysSober(sobrietyStartDate) {
+        // Function to calculate and display the sober time in years, months, and days
+        function calculateSoberTime(sobrietyStartDate) {
             const today = new Date();
             const timeDiff = today.getTime() - sobrietyStartDate.getTime();
-            const daysSober = Math.floor(timeDiff / (1000 * 3600 * 24));
-            document.getElementById('daysSober').innerText = daysSober + " days sober!";
+
+            // Calculate years, months, and days
+            const years = today.getFullYear() - sobrietyStartDate.getFullYear();
+            const months = today.getMonth() - sobrietyStartDate.getMonth();
+            const days = today.getDate() - sobrietyStartDate.getDate();
+
+            let soberText = '';
+
+            if (years > 0) {
+                soberText += years + " year" + (years > 1 ? "s " : " ");
+            }
+
+            if (months > 0 || years > 0) {
+                soberText += Math.abs(months) + " month" + (Math.abs(months) > 1 ? "s " : " ");
+            }
+
+            soberText += Math.abs(days) + " day" + (Math.abs(days) > 1 ? "s " : "");
+
+            document.getElementById('soberTime').innerText = soberText;
+
+            // Display the sobriety start date below the time
+            document.getElementById('sobrietyDate').innerText = "Sobriety Date: " + sobrietyStartDate.toDateString();
         }
 
         // Function to show a random quote
