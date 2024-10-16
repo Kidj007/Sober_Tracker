@@ -34,11 +34,6 @@
             margin: 5px 0;
         }
 
-        .header .challenge {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
         /* Recovery Duration Section */
         .recovery-duration {
             display: flex;
@@ -128,9 +123,10 @@
 
     <!-- Header Section -->
     <div class="header">
-        <h1>Chris Scott</h1>
-        <p>Joined: 5/5/2020</p>
-        <p class="challenge">Current challenge: 🏆</p>
+        <h1 id="userName">Welcome!</h1>
+        <p id="sobrietyDate">Joined: N/A</p>
+        <p class="challenge" id="currentMilestone">Current Milestone: N/A</p>
+        <p id="nextMilestone">Next Milestone: N/A</p>
     </div>
 
     <!-- Recovery Duration Section -->
@@ -139,10 +135,10 @@
             <h2 id="years">0 Years</h2>
         </div>
         <div class="duration-card">
-            <h2 id="months">2 Months</h2>
+            <h2 id="months">0 Months</h2>
         </div>
         <div class="duration-card">
-            <h2 id="days">23 Days</h2>
+            <h2 id="days">0 Days</h2>
         </div>
     </div>
 
@@ -166,7 +162,105 @@
     </div>
 
     <script>
-        // You can insert existing JavaScript functions here for calculating sober time and showing quotes
+        // Function to prompt user for name and sobriety start date
+        function initialSetup() {
+            const name = prompt("Please enter your name:");
+            const sobrietyDate = prompt("Please enter your sobriety start date (YYYY-MM-DD):");
+
+            if (name && sobrietyDate) {
+                localStorage.setItem('userName', name);
+                localStorage.setItem('sobrietyStartDate', sobrietyDate);
+                updateUI(name, new Date(sobrietyDate));
+            } else {
+                alert("Please provide valid inputs.");
+            }
+        }
+
+        // Function to update the UI with user's information
+        function updateUI(name, sobrietyStartDate) {
+            document.getElementById('userName').innerText = name;
+            document.getElementById('sobrietyDate').innerText = "Joined: " + sobrietyStartDate.toDateString();
+
+            calculateSoberTime(sobrietyStartDate);
+        }
+
+        // Check if the user has already set their name and sobriety date
+        window.onload = function() {
+            const storedName = localStorage.getItem('userName');
+            const storedDate = localStorage.getItem('sobrietyStartDate');
+
+            if (storedName && storedDate) {
+                updateUI(storedName, new Date(storedDate));
+            } else {
+                initialSetup();
+            }
+        };
+
+        // Function to calculate and display the sober time in years, months, and days
+        function calculateSoberTime(sobrietyStartDate) {
+            const today = new Date();
+            let years = today.getFullYear() - sobrietyStartDate.getFullYear();
+            let months = today.getMonth() - sobrietyStartDate.getMonth();
+            let days = today.getDate() - sobrietyStartDate.getDate();
+
+            // Adjust if days or months are negative
+            if (days < 0) {
+                months -= 1;
+                const daysInLastMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+                days += daysInLastMonth;
+            }
+
+            if (months < 0) {
+                years -= 1;
+                months += 12;
+            }
+
+            // Update UI with the sober time
+            document.getElementById('years').innerText = years + " Year" + (years !== 1 ? "s" : "");
+            document.getElementById('months').innerText = months + " Month" + (months !== 1 ? "s" : "");
+            document.getElementById('days').innerText = days + " Day" + (days !== 1 ? "s" : "");
+
+            // Update current and next milestone
+            updateMilestones(years, months, days);
+        }
+
+        // Function to update milestones
+        function updateMilestones(years, months, days) {
+            const totalDays = years * 365 + months * 30 + days; // Approximation for days
+            let currentMilestone;
+            let nextMilestone;
+
+            if (totalDays >= 365 * 10) {
+                currentMilestone = "10 Years";
+                nextMilestone = "10+ Years";
+            } else if (totalDays >= 365 * 5) {
+                currentMilestone = "5 Years";
+                nextMilestone = "10 Years";
+            } else if (totalDays >= 365 * 2) {
+                currentMilestone = "2 Years";
+                nextMilestone = "5 Years";
+            } else if (totalDays >= 365) {
+                currentMilestone = "1 Year";
+                nextMilestone = "2 Years";
+            } else if (totalDays >= 183) {
+                currentMilestone = "6 Months";
+                nextMilestone = "1 Year";
+            } else if (totalDays >= 30) {
+                currentMilestone = "1 Month";
+                nextMilestone = "6 Months";
+            } else if (totalDays >= 7) {
+                currentMilestone = "1 Week";
+                nextMilestone = "1 Month";
+            } else {
+                currentMilestone = "1 Day";
+                nextMilestone = "1 Week";
+            }
+
+            document.getElementById('currentMilestone').innerText = "Current Milestone: " + currentMilestone;
+            document.getElementById('nextMilestone').innerText = "Next Milestone: " + nextMilestone;
+        }
+
+        // Function for checking in
         function checkIn() {
             alert("You have checked in for today!");
             // Additional functionality for checking in can be added here
