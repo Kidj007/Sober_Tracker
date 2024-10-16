@@ -121,6 +121,18 @@
             font-size: 24px;
         }
 
+        /* Quote of the Day Section */
+        .quote-section {
+            background-color: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            margin: 20px;
+            font-size: 18px;
+            font-style: italic;
+            color: #555;
+        }
+
         /* Fixed Navigation Bar */
         .nav-bar {
             display: flex;
@@ -217,6 +229,12 @@
         </div>
     </div>
 
+    <!-- Quote of the Day Section -->
+    <div class="quote-section" id="quoteSection" style="display: none;">
+        <h2>Quote of the Day</h2>
+        <p id="dailyQuote"></p>
+    </div>
+
     <!-- Milestones Section -->
     <div class="milestones" id="milestones" style="display: none;">
         <h2>Next Milestone</h2>
@@ -237,6 +255,19 @@
     </div>
 
     <script>
+        // List of quotes
+        const quotes = [
+            "“The journey of a thousand miles begins with one step.” — Lao Tzu",
+            "“Every accomplishment starts with the decision to try.” — John F. Kennedy",
+            "“What lies behind us and what lies before us are tiny matters compared to what lies within us.” — Ralph Waldo Emerson",
+            "“Your life is your story, and the adventure ahead of you is the journey to fulfill your own purpose and potential.” — Kerry Washington",
+            "“It does not matter how slowly you go as long as you do not stop.” — Confucius",
+            "“Success is the sum of small efforts, repeated day in and day out.” — Robert Collier",
+            "“The only limit to our realization of tomorrow will be our doubts of today.” — Franklin D. Roosevelt",
+            "“Believe you can and you're halfway there.” — Theodore Roosevelt",
+            "“Start where you are. Use what you have. Do what you can.” — Arthur Ashe"
+        ];
+
         // Function to save user data
         function saveUserData() {
             const name = document.getElementById('userNameInput').value;
@@ -258,9 +289,13 @@
             document.getElementById('recoveryDuration').style.display = 'flex';
             document.getElementById('milestones').style.display = 'block';
             document.getElementById('navBar').style.display = 'flex';
+            document.getElementById('quoteSection').style.display = 'block'; // Show quote section
 
             document.getElementById('userName').innerText = "Welcome " + name + "!";
             document.getElementById('sobrietyDate').innerText = "Start Date: " + sobrietyStartDate.toDateString();
+
+            // Display the quote of the day
+            displayDailyQuote();
 
             calculateSoberTime(sobrietyStartDate);
         }
@@ -278,6 +313,7 @@
                 document.getElementById('recoveryDuration').style.display = 'none';
                 document.getElementById('milestones').style.display = 'none';
                 document.getElementById('navBar').style.display = 'none';
+                document.getElementById('quoteSection').style.display = 'none'; // Hide quote section
             }
         }
 
@@ -290,6 +326,18 @@
                 updateUI(storedName, new Date(storedDate));
             }
         };
+
+        // Function to display a daily quote
+        function displayDailyQuote() {
+            const today = new Date();
+            const firstDayOfYear = new Date(today.getFullYear(), 0, 0);
+            const diff = today - firstDayOfYear;
+            const oneDay = 1000 * 60 * 60 * 24; // milliseconds in a day
+            const dayOfYear = Math.floor(diff / oneDay);
+
+            const quoteIndex = dayOfYear % quotes.length; // Get index for daily quote
+            document.getElementById('dailyQuote').innerText = quotes[quoteIndex];
+        }
 
         // Function to calculate and display the sober time in years, months, and days
         function calculateSoberTime(sobrietyStartDate) {
