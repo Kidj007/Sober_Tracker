@@ -31,6 +31,7 @@
             width: 90%;
             margin: 0 auto 20px;
             max-width: 400px;
+            padding: 20px 20px; /* Ensure box doesn't touch mobile edges */
         }
 
         #soberTime {
@@ -54,6 +55,7 @@
             width: 90%;
             margin: 0 auto;
             max-width: 400px;
+            padding: 20px 20px; /* Ensure box doesn't touch mobile edges */
         }
 
         #quote {
@@ -62,7 +64,6 @@
             font-style: italic;
         }
 
-        /* Remove Bottom Navigation */
         /* Hamburger Menu Styling */
         .hamburger {
             font-size: 30px;
@@ -135,6 +136,7 @@
         <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
         <a href="index.html">Home</a>
         <a href="milestones.html">Milestones</a>
+        <a href="javascript:void(0)" onclick="promptNewDate()">Update Sober Date</a> <!-- New Update Date Button -->
     </div>
 
     <script>
@@ -153,24 +155,33 @@
         // Function to calculate and display the sober time in years, months, and days
         function calculateSoberTime(sobrietyStartDate) {
             const today = new Date();
-            const timeDiff = today.getTime() - sobrietyStartDate.getTime();
+            let years = today.getFullYear() - sobrietyStartDate.getFullYear();
+            let months = today.getMonth() - sobrietyStartDate.getMonth();
+            let days = today.getDate() - sobrietyStartDate.getDate();
 
-            // Calculate years, months, and days
-            const years = today.getFullYear() - sobrietyStartDate.getFullYear();
-            const months = today.getMonth() - sobrietyStartDate.getMonth();
-            const days = today.getDate() - sobrietyStartDate.getDate();
+            // Adjust if days or months are negative
+            if (days < 0) {
+                months -= 1;
+                const daysInLastMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+                days += daysInLastMonth;
+            }
+
+            if (months < 0) {
+                years -= 1;
+                months += 12;
+            }
 
             let soberText = '';
 
             if (years > 0) {
-                soberText += years + " year" + (years > 1 ? "s " : " ");
+                soberText += years + " Year" + (years > 1 ? "s " : " ");
             }
 
             if (months > 0 || years > 0) {
-                soberText += Math.abs(months) + " month" + (Math.abs(months) > 1 ? "s " : " ");
+                soberText += months + " Month" + (months > 1 ? "s " : " ");
             }
 
-            soberText += Math.abs(days) + " day" + (Math.abs(days) > 1 ? "s " : "");
+            soberText += days + " Day" + (days > 1 ? "s " : "");
 
             document.getElementById('soberTime').innerText = soberText;
 
@@ -191,13 +202,29 @@
             document.getElementById('quote').innerText = randomQuote;
         }
 
-        // Sidebar Functions
+        // Function to open the sidebar
         function openNav() {
             document.getElementById("sidebar").style.width = "180px";
         }
 
+        // Function to close the sidebar
         function closeNav() {
             document.getElementById("sidebar").style.width = "0";
+        }
+
+        // Function to prompt user for a new sober date
+        function promptNewDate() {
+            const newDate = prompt("Please enter your new sober start date (YYYY-MM-DD):");
+            if (newDate) {
+                const newSoberDate = new Date(newDate);
+                if (!isNaN(newSoberDate)) {
+                    localStorage.setItem('sobrietyStartDate', newSoberDate);
+                    calculateSoberTime(newSoberDate);
+                    alert("Sober date updated!");
+                } else {
+                    alert("Invalid date format. Please try again.");
+                }
+            }
         }
     </script>
 
