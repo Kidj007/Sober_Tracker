@@ -73,26 +73,29 @@
             z-index: 2;
         }
 
+        /* Updated Sidebar Styles */
         .sidebar {
             height: 100%;
             width: 0;
             position: fixed;
-            z-index: 1;
+            z-index: 2;
             top: 0;
             left: 0;
-            background-color: #111;
+            background-color: #e0e0e0; /* Light Grey */
             overflow-x: hidden;
             transition: 0.5s;
             padding-top: 60px;
+            box-shadow: 2px 0 5px rgba(0,0,0,0.5);
         }
 
         .sidebar a {
-            padding: 8px 8px 8px 32px;
+            padding: 8px;
             text-decoration: none;
             font-size: 25px;
             color: #818181;
             display: block;
             transition: 0.3s;
+            text-align: center; /* Center the links */
         }
 
         .sidebar a:hover {
@@ -107,9 +110,14 @@
             margin-left: 50px;
         }
 
+        /* Reduce Sidebar Width by 25% */
         #mainContent {
-            transition: margin-left 0.5s;
             padding: 16px;
+        }
+
+        @media screen and (max-height: 450px) {
+            .sidebar { padding-top: 15px; }
+            .sidebar a { font-size: 18px; }
         }
     </style>
 </head>
@@ -207,13 +215,11 @@
 
         // Sidebar Functions
         function openNav() {
-            document.getElementById("sidebar").style.width = "250px";
-            document.getElementById("mainContent").style.marginLeft = "250px";
+            document.getElementById("sidebar").style.width = "180px"; /* Reduce width by 25% */
         }
 
         function closeNav() {
             document.getElementById("sidebar").style.width = "0";
-            document.getElementById("mainContent").style.marginLeft = "0";
         }
     </script>
 
