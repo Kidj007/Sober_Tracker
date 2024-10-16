@@ -9,97 +9,131 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f0f0f0;
-        }
-        .sidebar {
-            position: fixed;
-            top: 0;
-            left: -250px;
-            width: 250px;
-            height: 100%;
-            background-color: #f8f8f8;
-            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
-            transition: left 0.3s ease;
-            z-index: 5;
-        }
-        .sidebar.active {
-            left: 0;
-        }
-        .sidebar h2 {
             text-align: center;
+            background-color: #f4f4f4;
         }
-        .sidebar a {
-            display: block;
-            padding: 10px;
-            text-decoration: none;
-            color: #333;
-        }
-        .hamburger {
-            cursor: pointer;
-            font-size: 30px;
-            padding: 10px;
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            z-index: 6;
-        }
+
         h1 {
-            text-align: center;
+            margin-top: 20px;
         }
-        #quote {
-            text-align: center;
-            font-size: 20px;
-            margin: 20px 0;
-        }
+
         #daysSober {
-            text-align: center;
             font-size: 24px;
-            margin: 20px 0;
+            margin-top: 20px;
         }
-        input[type="date"] {
-            display: none; /* Hide the date input */
+
+        #quote {
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        #updateDateButton {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #enterDate {
+            margin-top: 50px;
+        }
+
+        #enterDate p {
+            font-size: 20px;
+        }
+
+        #enterDate input {
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        #enterDate button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .sidebar {
+            display: none;
+            /* Hidden by default */
         }
     </style>
 </head>
 <body>
 
-    <div class="hamburger" onclick="toggleMenu()">☰</div>
-    <div class="sidebar" id="sidebar">
-        <h2>Menu</h2>
-        <a href="index.html">Home</a>
-        <a href="milestones.html">Milestones</a>
+    <h1>Sober Day Tracker</h1>
+
+    <div id="enterDate">
+        <p>Enter your start date:</p>
+        <input type="date" id="dateInput">
+        <button onclick="saveDate()">Submit</button>
     </div>
 
-    <h1>Sober Day Tracker</h1>
-    <div id="daysSober">Days Sober: <span id="daysCounter">0</span></div>
-    <div id="quote"></div>
+    <div id="daysSober" style="display: none;"></div>
 
-    <input type="date" id="dateInput" onchange="updateDate()">
-    
+    <div id="quote" style="display: none;"></div>
+
+    <button id="updateDateButton" style="display: none;" onclick="showDateInput()">Update Date</button>
+
     <script>
-        function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
-        }
+        // Check if the sobriety start date is already stored
+        window.onload = function() {
+            const storedDate = localStorage.getItem('sobrietyStartDate');
+            if (storedDate) {
+                calculateDaysSober(new Date(storedDate));
+                document.getElementById('enterDate').style.display = 'none';
+                document.getElementById('daysSober').style.display = 'block';
+                document.getElementById('quote').style.display = 'block';
+                document.getElementById('updateDateButton').style.display = 'block';
+                showRandomQuote();
+            }
+        };
 
-        function updateDate() {
-            const dateInput = document.getElementById('dateInput');
-            const date = dateInput.value;
-            if (date) {
-                localStorage.setItem("soberDate", date);
-                calculateDaysSober(date);
+        // Function to save the entered date
+        function saveDate() {
+            const dateInput = document.getElementById('dateInput').value;
+            if (dateInput) {
+                const sobrietyStartDate = new Date(dateInput);
+                localStorage.setItem('sobrietyStartDate', sobrietyStartDate);
+                calculateDaysSober(sobrietyStartDate);
+                document.getElementById('enterDate').style.display = 'none';
+                document.getElementById('daysSober').style.display = 'block';
+                document.getElementById('quote').style.display = 'block';
+                document.getElementById('updateDateButton').style.display = 'block';
+                showRandomQuote();
+            } else {
+                alert("Please select a valid date.");
             }
         }
 
-        function calculateDaysSober(soberDate) {
-            const dateEntered = new Date(soberDate);
+        // Function to calculate and display the number of days sober
+        function calculateDaysSober(sobrietyStartDate) {
             const today = new Date();
-            const diffTime = today - dateEntered;
-            const daysSober = Math.floor(diffTime / (1000 * 60 * 60 * 24));
-            document.getElementById('daysCounter').textContent = daysSober;
+            const timeDiff = today.getTime() - sobrietyStartDate.getTime();
+            const daysSober = Math.floor(timeDiff / (1000 * 3600 * 24));
+            document.getElementById('daysSober').innerText = daysSober + " days sober!";
         }
 
-        function displayRandomQuote() {
+        // Function to show the date input again for updating the date
+        function showDateInput() {
+            document.getElementById('enterDate').style.display = 'block';
+            document.getElementById('daysSober').style.display = 'none';
+            document.getElementById('quote').style.display = 'none';
+            document.getElementById('updateDateButton').style.display = 'none';
+        }
+
+        // Function to show a random quote
+        function showRandomQuote() {
             const quotes = [
                 "“The journey of a thousand miles begins with one step.” — Lao Tzu",
                 "“Every accomplishment starts with the decision to try.” — John F. Kennedy",
@@ -107,24 +141,10 @@
                 "“Your life is your story, and the adventure ahead of you is the journey to fulfill your own purpose and potential.” — Kerry Washington",
                 "“It does not matter how slowly you go as long as you do not stop.” — Confucius"
             ];
-            const randomIndex = Math.floor(Math.random() * quotes.length);
-            document.getElementById("quote").textContent = quotes[randomIndex];
-        }
-
-        // On load, calculate the days sober and display the quote
-        window.onload = function() {
-            displayRandomQuote();
-            const storedDate = localStorage.getItem("soberDate");
-            if (storedDate) {
-                document.getElementById('dateInput').value = storedDate; // Set the value in the date input
-                calculateDaysSober(storedDate);
-            } else {
-                // Prompt user to select a date if none is set
-                const dateInput = document.getElementById('dateInput');
-                dateInput.style.display = 'block'; // Show the date input
-                dateInput.focus(); // Focus on the date input
-            }
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            document.getElementById('quote').innerText = randomQuote;
         }
     </script>
+
 </body>
 </html>
