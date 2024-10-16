@@ -63,27 +63,87 @@
             cursor: pointer;
         }
 
+        /* Hamburger Menu Styles */
+        .hamburger {
+            font-size: 30px;
+            cursor: pointer;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 2;
+        }
+
         .sidebar {
-            display: none;
-            /* Hidden by default */
+            height: 100%;
+            width: 0;
+            position: fixed;
+            z-index: 1;
+            top: 0;
+            left: 0;
+            background-color: #111;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+        }
+
+        .sidebar a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar a:hover {
+            color: #f1f1f1;
+        }
+
+        .sidebar .closebtn {
+            position: absolute;
+            top: 0;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        #mainContent {
+            transition: margin-left 0.5s;
+            padding: 16px;
         }
     </style>
 </head>
 <body>
 
-    <h1>Sober Day Tracker</h1>
+    <div id="mainContent">
+        <!-- Hamburger Menu Icon -->
+        <span class="hamburger" onclick="openNav()">&#9776;</span>
 
-    <div id="enterDate">
-        <p>Enter your start date:</p>
-        <input type="date" id="dateInput">
-        <button onclick="saveDate()">Submit</button>
+        <h1>Sober Day Tracker</h1>
+
+        <!-- Enter Date Section -->
+        <div id="enterDate">
+            <p>Enter your start date:</p>
+            <input type="date" id="dateInput">
+            <button onclick="saveDate()">Submit</button>
+        </div>
+
+        <!-- Days Sober Counter -->
+        <div id="daysSober" style="display: none;"></div>
+
+        <!-- Random Quote -->
+        <div id="quote" style="display: none;"></div>
+
+        <!-- Update Date Button -->
+        <button id="updateDateButton" style="display: none;" onclick="showDateInput()">Update Date</button>
     </div>
 
-    <div id="daysSober" style="display: none;"></div>
-
-    <div id="quote" style="display: none;"></div>
-
-    <button id="updateDateButton" style="display: none;" onclick="showDateInput()">Update Date</button>
+    <!-- Sidebar Menu -->
+    <div id="sidebar" class="sidebar">
+        <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+        <a href="index.html">Home</a>
+        <a href="milestones.html">Milestones</a>
+    </div>
 
     <script>
         // Check if the sobriety start date is already stored
@@ -143,6 +203,17 @@
             ];
             const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
             document.getElementById('quote').innerText = randomQuote;
+        }
+
+        // Sidebar Functions
+        function openNav() {
+            document.getElementById("sidebar").style.width = "250px";
+            document.getElementById("mainContent").style.marginLeft = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("sidebar").style.width = "0";
+            document.getElementById("mainContent").style.marginLeft = "0";
         }
     </script>
 
