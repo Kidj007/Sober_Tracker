@@ -201,7 +201,7 @@
         <h2 id="userName">Welcome!</h2>
         <p id="sobrietyDate">Start Date: N/A</p>
         <p class="challenge" id="currentMilestone">Current Milestone: N/A</p>
-        <p id="nextMilestone">Next Milestone: N/A</p>
+        <p class="challenge" id="nextMilestone">Next Milestone: N/A</p>
     </div>
 
     <!-- Recovery Duration Section -->
@@ -316,12 +316,12 @@
             document.getElementById('months').innerText = months + " Month" + (months !== 1 ? "s" : "");
             document.getElementById('days').innerText = days + " Day" + (days !== 1 ? "s" : "");
 
-            // Update current and next milestone
-            updateMilestones(years, months, days);
+            // Update milestones
+            updateMilestones(years, months, days, sobrietyStartDate);
         }
 
         // Function to update milestones and progress
-        function updateMilestones(years, months, days) {
+        function updateMilestones(years, months, days, sobrietyStartDate) {
             const totalDays = years * 365 + months * 30 + days; // Approximation for days
             let currentMilestone;
             let nextMilestone;
@@ -358,6 +358,7 @@
                 nextMilestoneDays = 3650;
             }
 
+            // Update UI with milestones
             document.getElementById('currentMilestone').innerText = "Current Milestone: " + currentMilestone;
             document.getElementById('nextMilestone').innerText = "Next Milestone: " + nextMilestone;
 
