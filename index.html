@@ -228,7 +228,6 @@
             </div>
         </div>
         <p id="progressText">0% towards your next milestone</p>
-        <p id="nextMilestoneDate"></p>
     </div>
 
     <!-- Fixed Navigation Bar -->
@@ -365,11 +364,6 @@
             // Calculate progress towards next milestone
             const progressPercent = Math.min((totalDays / nextMilestoneDays) * 100, 100); // Cap at 100%
             document.getElementById('progressText').innerText = Math.round(progressPercent) + "% towards your next milestone";
-
-            // Calculate the expected date for the next milestone
-            const nextMilestoneDate = new Date(sobrietyStartDate);
-            nextMilestoneDate.setDate(nextMilestoneDate.getDate() + nextMilestoneDays);
-            document.getElementById('nextMilestoneDate').innerText = "You will hit your next milestone on " + nextMilestoneDate.toLocaleDateString();
 
             // Update progress bar
             updateProgressBar(progressPercent, currentMilestone, nextMilestone);
