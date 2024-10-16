@@ -16,6 +16,15 @@
             height: 100vh;
         }
 
+        /* Landing Page */
+        .landing-page {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+        }
+
         /* Header Section */
         .header {
             background-color: #7C4DFF; /* Example color */
@@ -32,6 +41,35 @@
         .header p {
             font-size: 14px;
             margin: 5px 0;
+        }
+
+        /* Input Form Styling */
+        .input-form {
+            margin: 20px;
+        }
+
+        .input-form input {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 250px;
+            font-size: 16px;
+        }
+
+        .input-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        .input-form button:hover {
+            background-color: #45a049;
         }
 
         /* Recovery Duration Section */
@@ -121,8 +159,18 @@
 </head>
 <body>
 
+    <!-- Landing Page -->
+    <div class="landing-page" id="landingPage">
+        <h1>Sober Tracker</h1>
+        <div class="input-form">
+            <input type="text" id="userNameInput" placeholder="Enter your name" />
+            <input type="date" id="sobrietyDateInput" placeholder="Sobriety Start Date" />
+            <button onclick="saveUserData()">Start Tracking</button>
+        </div>
+    </div>
+
     <!-- Header Section -->
-    <div class="header">
+    <div class="header" id="header" style="display: none;">
         <h1 id="userName">Welcome!</h1>
         <p id="sobrietyDate">Joined: N/A</p>
         <p class="challenge" id="currentMilestone">Current Milestone: N/A</p>
@@ -130,7 +178,7 @@
     </div>
 
     <!-- Recovery Duration Section -->
-    <div class="recovery-duration">
+    <div class="recovery-duration" id="recoveryDuration" style="display: none;">
         <div class="duration-card">
             <h2 id="years">0 Years</h2>
         </div>
@@ -143,29 +191,29 @@
     </div>
 
     <!-- Rewards Section -->
-    <div class="rewards">
+    <div class="rewards" id="rewards" style="display: none;">
         <h2>Rewards Earned</h2>
         <div class="amount" id="rewardAmount">$200 Earned so far</div>
     </div>
 
     <!-- Milestones Section -->
-    <div class="milestones">
+    <div class="milestones" id="milestones" style="display: none;">
         <h2>Next Milestone</h2>
         <button onclick="checkIn()">Earn milestones by checking in!</button>
     </div>
 
     <!-- Navigation Bar -->
-    <div class="nav-bar">
+    <div class="nav-bar" id="navBar" style="display: none;">
         <a href="#">My Day</a>
         <a href="#">Online</a>
         <a href="#">Messages</a>
     </div>
 
     <script>
-        // Function to prompt user for name and sobriety start date
-        function initialSetup() {
-            const name = prompt("Please enter your name:");
-            const sobrietyDate = prompt("Please enter your sobriety start date (YYYY-MM-DD):");
+        // Function to save user data
+        function saveUserData() {
+            const name = document.getElementById('userNameInput').value;
+            const sobrietyDate = document.getElementById('sobrietyDateInput').value;
 
             if (name && sobrietyDate) {
                 localStorage.setItem('userName', name);
@@ -178,6 +226,13 @@
 
         // Function to update the UI with user's information
         function updateUI(name, sobrietyStartDate) {
+            document.getElementById('landingPage').style.display = 'none';
+            document.getElementById('header').style.display = 'block';
+            document.getElementById('recoveryDuration').style.display = 'flex';
+            document.getElementById('rewards').style.display = 'block';
+            document.getElementById('milestones').style.display = 'block';
+            document.getElementById('navBar').style.display = 'flex';
+
             document.getElementById('userName').innerText = name;
             document.getElementById('sobrietyDate').innerText = "Joined: " + sobrietyStartDate.toDateString();
 
@@ -191,8 +246,6 @@
 
             if (storedName && storedDate) {
                 updateUI(storedName, new Date(storedDate));
-            } else {
-                initialSetup();
             }
         };
 
